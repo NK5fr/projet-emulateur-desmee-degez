@@ -14,12 +14,68 @@ map<string, array<string, 2>> opcode = {
     {"0110111", {"LUI", "U"}}
 };
 
+map<string, map<string, string>> instructions = {
+    {"1100011", {
+        {"000", "BEQ"},
+        {"001", "BNE"},
+        {"100", "BLT"},
+        {"101", "BGE"},
+        {"110", "BLTU"},
+        {"111", "BGEU"}}},
+    {"1100111", {
+        {"000", "JALR"}}},
+    {"0000011", {
+        {"000", "LB"},
+        {"001", "LH"},
+        {"010", "LW"},
+        {"100", "LBU"},
+        {"101", "LHU"},}},
+    {"0001111", {
+        {"000", "FENCE"}}},
+    {"0010011", {
+        {"000", "ADDI"},
+        {"010", "SLTI"},
+        {"011", "SLTIU"},
+        {"100", "XORI"},
+        {"110", "ORI"},
+        {"111", "ANDI"},
+        {"001", "SLLI"},
+        {"0101", "SRLI"},
+        {"1101", "SRAI"},}},
+    {"1110011", {
+        {"0000", "ECALL"},
+        {"0001", "EBREAK"}}},
+    {"1101111", {
+        {"000", "JAL"}}},
+    {"0110011", {
+        {"0000", "ADD"},
+        {"1000", "SUB"},
+        {"001", "SLL"},
+        {"010", "SLT"},
+        {"011", "SLTU"},
+        {"100", "XOR"},
+        {"0101", "SRL"},
+        {"1101", "SRA"},
+        {"110", "OR"},
+        {"111", "AND"}}},
+    {"0100011", {
+        {"000", "SB"},
+        {"001", "SH"},
+        {"010", "SW"}}},
+    {"0010111", {
+        {"000", "AUIPC"},}},
+    {"0110111", {
+        {"000", "LUI"}}}
+};
+
 int main(int argc, char *argv[]) {
 
     if(argc != 2){
         printError();
         return 1;
     }
+
+    cout << instructions.at("1100011").at("000") << endl;
 
     string argument(argv[1]);
     
@@ -90,10 +146,10 @@ void printResult(vector<uint32_t> words)
 }
 
 void printHelp(){
-    cout << "Un décodeur d'instruction RISC-V RV32I" << endl;
-    cout << "\nUtilisation: riscv-decode [OPTIONS] FICHIER_BIN" << endl;
+    cout << "Un désassembleur RISC-V pour le jeu d'instruction RV32I" << endl;
+    cout << "\nUtilisation: riscv-disas [OPTIONS] FICHIER_BIN" << endl;
     cout << "\nArguments:" << endl;
-    cout << "   FICHIER_BIN         Un fichier au format binaire contenant les instructions à décoder" << endl;
+    cout << "   FICHIER_BIN         Un fichier contenant les instructions à désassembler" << endl;
     cout << "\nOptions:" << endl;
     cout << "   -h                  Affiche ce message d'aide" << endl;
 }
