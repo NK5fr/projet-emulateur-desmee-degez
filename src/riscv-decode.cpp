@@ -92,6 +92,7 @@ void printResult(vector<uint32_t> words)
                  << endl;
         } catch (const out_of_range& oor) {
             cout << setfill('0') << setw(8) << offset.str() << ", "
+                 << setfill('0') << setw(8) << word.str() << ", "
                  << "Instruction non valide"
                  << endl;
         }
