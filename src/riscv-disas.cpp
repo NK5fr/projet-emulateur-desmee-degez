@@ -69,7 +69,7 @@ map<string, map<string, string>> instructions = {
 };
 
 int main(int argc, char *argv[]) {
-
+    cout << getDataTypeI() << endl;
     if(argc != 2){
         printError();
         return 1;
@@ -159,4 +159,10 @@ void printError(){
     cout << "Essaie 'riscv-decode -h' pour plus d'information." << endl;
 }
 
+vector<int> getDataTypeI(){
+    vector<uint32_t> res;
+    res.push_back(7);
+    res.push_back(5);
+    return res;
+}
 

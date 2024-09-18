@@ -14,3 +14,4 @@ uint32_t getOpcode(uint32_t word);
 void printResult(vector<uint32_t> words);
 void printHelp();
 void printError();
+vector<int> getDataTypeI();
