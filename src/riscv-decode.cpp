@@ -85,14 +85,15 @@ void printResult(vector<uint32_t> words)
         try {
             array<string, 2>& values = opcode.at(opcStr);
 
-            cout << setfill('0') << setw(8) << offset.str() << ", "
-                 << setfill('0') << setw(8) << word.str() << ", "
-                 << values[0] << ", "
-                 << values[1] << ", "
+            cout << setfill('0') << setw(8) << offset.str() << ","
+                 << setfill('0') << setw(8) << word.str() << ","
+                 << values[0] << ","
+                 << values[1]
                  << endl;
         } catch (const out_of_range& oor) {
-            cout << setfill('0') << setw(8) << offset.str() << ", "
-                 << "Instruction non valide"
+            cout << "Instruction 0x" << setfill('0') << setw(8) << word.str()
+                 << " is not supported at offset " << setfill('0') << setw(8) << offset.str()
+                 << " for word " << setfill('0') << setw(8) << word.str()
                  << endl;
         }
     }
