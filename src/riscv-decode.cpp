@@ -82,13 +82,19 @@ void printResult(vector<uint32_t> words)
         stringstream word;
         word << hex << words.at(i);
 
-        array<string, 2>& values = opcode.at(opcStr);
+        try {
+            array<string, 2>& values = opcode.at(opcStr);
 
-        cout << setfill('0') << setw(8) << offset.str() << ", "
-             << setfill('0') << setw(8) << word.str() << ", "
-             << values[0] << ", "
-             << values[1] << ", "
-             << endl;
+            cout << setfill('0') << setw(8) << offset.str() << ", "
+                 << setfill('0') << setw(8) << word.str() << ", "
+                 << values[0] << ", "
+                 << values[1] << ", "
+                 << endl;
+        } catch (const out_of_range& oor) {
+            cout << setfill('0') << setw(8) << offset.str() << ", "
+                 << "Instruction non valide"
+                 << endl;
+        }
     }
 }
 
