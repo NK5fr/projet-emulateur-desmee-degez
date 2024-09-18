@@ -91,10 +91,10 @@ void printResult(vector<uint32_t> words)
 
 void printHelp(){
     cout << "Un décodeur d'instruction RISC-V RV32I" << endl;
-    cout << "Utilisation: riscv-decode [OPTIONS] FICHIER_BIN" << endl;
-    cout << "Arguments:" << endl;
+    cout << "\nUtilisation: riscv-decode [OPTIONS] FICHIER_BIN" << endl;
+    cout << "\nArguments:" << endl;
     cout << "   FICHIER_BIN Un fichier au format binaire contenant les instructions à décoder" << endl;
-    cout << "Options:" << endl;
+    cout << "\nOptions:" << endl;
     cout << "   -h Affiche ce message d'aide" << endl;
 }
 
