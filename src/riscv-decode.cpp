@@ -16,7 +16,15 @@ map<string, array<string, 2>> opcode = {
 
 int main(int argc, char *argv[]) {
 
-    if(argc < 2){
+    if(argc != 2){
+        printError();
+        return 1;
+    }
+
+    string argument(argv[1]);
+    
+    if(!argument.compare("-h")){
+        printHelp();
         return 1;
     }
     
@@ -69,7 +77,7 @@ void printResult(vector<uint32_t> words)
         uint32_t opc = getOpcode(words.at(i));
 
         bitset<7> opcBin (opc);
-        string opcStr = nat.to_string();
+        string opcStr = opcBin.to_string();
 
         array<string, 2>& values = opcode.at(opcStr);
 
@@ -79,6 +87,20 @@ void printResult(vector<uint32_t> words)
              << values[1] << ", "
              << endl;
     }
+}
+
+void printHelp(){
+    cout << "Un décodeur d'instruction RISC-V RV32I" << endl;
+    cout << "Utilisation: riscv-decode [OPTIONS] FICHIER_BIN" << endl;
+    cout << "Arguments:" << endl;
+    cout << "   FICHIER_BIN Un fichier au format binaire contenant les instructions à décoder" << endl;
+    cout << "Options:" << endl;
+    cout << "   -h Affiche ce message d'aide" << endl;
+}
+
+void printError(){
+    cout << "Utilisation: riscv-decode [OPTIONS] FICHIER_BIN" << endl;
+    cout << "Essaie 'riscv-decode -h' pour plus d'information." << endl;
 }
 
 
