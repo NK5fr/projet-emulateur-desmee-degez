@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
     
     if(!argument.compare("-h")){
         printHelp();
-        return 1;
+        return 0;
     }
     
     vector<uint32_t> words = readFile(argv[1]);
@@ -79,10 +79,13 @@ void printResult(vector<uint32_t> words)
         bitset<7> opcBin (opc);
         string opcStr = opcBin.to_string();
 
+        stringstream word;
+        word << hex << words.at(i);
+
         array<string, 2>& values = opcode.at(opcStr);
 
         cout << setfill('0') << setw(8) << offset.str() << ", "
-             << hex << words.at(i) << ", "
+             << setfill('0') << setw(8) << word.str() << ", "
              << values[0] << ", "
              << values[1] << ", "
              << endl;
