@@ -75,8 +75,8 @@ void printResult(vector<uint32_t> words)
 
         cout << setfill('0') << setw(8) << offset.str() << ", "
              << hex << words.at(i) << ", "
-             << hex << values[0] << ", "
-             << hex << values[1] << ", "
+             << values[0] << ", "
+             << values[1] << ", "
              << endl;
     }
 }
