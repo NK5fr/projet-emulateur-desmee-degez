@@ -1,4 +1,5 @@
 #include "../header/riscv-decode.h"
+#include "../header/UEncoding.h"
 
 map<string, array<string, 2>> opcode = {
     {"1100011", {"BRANCH", "S_B"}},
@@ -61,7 +62,11 @@ map<string, map<string, string>> instructions = {
 };
 
 int main(int argc, char *argv[]) {
-    cout << getDataTypeI() << endl;
+
+    UEncoding ue("jarl");
+
+    cout << ue.getName() << endl;
+
     if(argc != 2){
         printError();
         return 1;
@@ -188,12 +193,5 @@ void printHelp(){
 void printError(){
     cout << "Utilisation: riscv-decode [OPTIONS] FICHIER_BIN" << endl;
     cout << "Essaie 'riscv-decode -h' pour plus d'information." << endl;
-}
-
-vector<int> getDataTypeI(){
-    vector<uint32_t> res;
-    res.push_back(7);
-    res.push_back(5);
-    return res;
 }
 

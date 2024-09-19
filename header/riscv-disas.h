@@ -16,4 +16,3 @@ void printUEncoding(uint32_t word, string name);
 void printResult(vector<uint32_t> words);
 void printHelp();
 void printError();
-vector<int> getDataTypeI();
