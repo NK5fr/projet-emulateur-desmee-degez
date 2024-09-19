@@ -1,4 +1,5 @@
 #include <iostream> 
+#include <iomanip>
 #include <string>
 #include <sstream>  
 #include <map> 
@@ -10,12 +11,15 @@ class REncodingInstruction {
 
   private :    
     string name;
-    uint32_t rd;
-    uint32_t rs1;
-    uint32_t rs2;
+    uint32_t word;
 
   public :
     static map<string, map<string, string>> instructions;
     REncodingInstruction(uint32_t word, string name) ;
-    void printInstruction();
+    string getName();
+    string getFunct7();
+    string getRd();
+    string getRs1();
+    string getRs2();
+    void printInstruction(string offset);
 } ;

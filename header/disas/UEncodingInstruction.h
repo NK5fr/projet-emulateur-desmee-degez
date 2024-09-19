@@ -1,4 +1,5 @@
 #include <iostream> 
+#include <iomanip>
 #include <string>
 #include <sstream>   
 
@@ -8,10 +9,13 @@ class UEncodingInstruction {
 
   private :    
     string name;
-    uint32_t rd;
-    int32_t imm;
+    uint32_t word;
 
   public :
     UEncodingInstruction(uint32_t word, string name) ;
-    void printInstruction();
+    string getName();
+    string getRd();
+    int32_t getImm();
+    int32_t getImmJ();
+    void printInstruction(string offset);
 } ;

@@ -16,36 +16,75 @@ map<string, map<string, string>> IEncodingInstruction::instructions = {
         {"100", "xori"},
         {"110", "ori"},
         {"111", "andi"},
-        {"001", "slli"},
-        {"0101", "srli"},
-        {"1101", "srai"},}},
-    {"SYSTEM", {
-        {"0000", "ecall"},
-        {"0001", "ebreak"}}}
+        {"001", "slli"},}}
 };
 
 IEncodingInstruction::IEncodingInstruction(uint32_t word, string name) {
-  uint32_t funct3 = (word >> 12) & 0x7;
+  this->name = name;
+  this->word = word;
+}
+
+string IEncodingInstruction::getName(){
+  if(!this->name.compare("JALR")){
+    return "jalr";
+  }
+
+  uint32_t funct3 = (this->word >> 12) & 0x7;
   bitset<3> funct3Bin (funct3);
   string funct3Str = funct3Bin.to_string();
-  this->name = instructions.at(name).at(funct3Str);
 
-  this->rd = (word >> 7) & 0x1f;
-  this->rs1 = (word >> 15) & 0x1f;
-  
-  int32_t imm32 = (word >> 20) & 0xfff;
+  bitset<12> ImmBin (getImm());
+  string ImmStr = ImmBin.to_string();
+
+
+
+  if(!this->name.compare("OP-IMM") && !funct3Str.compare("101") && !getFunct7().compare("0100000")){
+    return "srai";
+  }else if(!this->name.compare("OP-IMM") && !funct3Str.compare("101") && !getFunct7().compare("0000000")){
+    return "srli";
+  }else if(!this->name.compare("SYSTEM") && !ImmStr.compare("000000000000")){
+    return "ecall";
+  }else if(!this->name.compare("SYSTEM") && !ImmStr.compare("000000000001")){
+    return "ebreak";
+  }
+
+  return instructions.at(this->name).at(funct3Str);
+}
+
+string IEncodingInstruction::getFunct7(){
+  uint32_t funct7 = (this->word >> 25) & 0x7f;
+  bitset<7> funct7Bin (funct7);
+  return funct7Bin.to_string();
+}
+
+string IEncodingInstruction::getRd(){
+  uint32_t rd = (this->word >> 7) & 0x1f;
+  return "x" + to_string(rd);
+}
+
+string IEncodingInstruction::getRs1(){
+  uint32_t rs1 = (this->word >> 15) & 0x1f;
+  return "x" + to_string(rs1);
+}
+
+int32_t IEncodingInstruction::getImm(){
+  int32_t imm32 = (this->word >> 20) & 0xfff;
   if ((imm32 >> 11) & 1) {
-    this->imm = imm32 | 0xfffff000;
+    return imm32 | 0xfffff000;
   }else{
-    this->imm = imm32;
+    return imm32;
   }
 }
 
-void IEncodingInstruction::printInstruction(){
-  string rdStr = "x" + to_string(this->rd);
-  string rs1Str = "x" + to_string(this->rs1);
+void IEncodingInstruction::printInstruction(string offset){
   stringstream immHex;
-  immHex << hex << this->imm;
+  immHex << hex << getImm();
 
-  cout << this->name << " " << rdStr << ", " << rs1Str << ", " << this->imm << "    // 0x" << immHex.str() << endl;
+  cout << setfill('0') << setw(8) << offset << ": ";
+
+  if(!this->name.compare("SYSTEM")){
+    cout << getName() << endl;
+  }else{
+    cout << getName() << " " << getRd() << ", " << getRs1() << ", " << getImm() << "    // 0x" << immHex.str() << endl;
+  }
 }

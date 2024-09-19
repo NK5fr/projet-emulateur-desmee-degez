@@ -18,57 +18,7 @@ map<string, array<string, 2>> opcode = {
     {"0110111", {"LUI", "U"}}
 };
 
-map<string, map<string, string>> instructions = {
-    {"BRANCH", {
-        {"000", "beq"},
-        {"001", "bne"},
-        {"100", "blt"},
-        {"101", "bge"},
-        {"110", "bltu"},
-        {"111", "bgeu"}}},
-    {"LOAD", {
-        {"000", "lb"},
-        {"001", "lh"},
-        {"010", "lw"},
-        {"100", "lbu"},
-        {"101", "lhu"},}},
-    {"MISC-MEM", {
-        {"000", "fence"}}},
-    {"OP-IMM", {
-        {"000", "addi"},
-        {"010", "slti"},
-        {"011", "sltiu"},
-        {"100", "xori"},
-        {"110", "ori"},
-        {"111", "andi"},
-        {"001", "slli"},
-        {"0101", "srli"},
-        {"1101", "srai"},}},
-    {"SYSTEM", {
-        {"0000", "ecall"},
-        {"0001", "ebreak"}}},
-    {"OP", {
-        {"0000", "add"},
-        {"1000", "sub"},
-        {"001", "sll"},
-        {"010", "slt"},
-        {"011", "sltu"},
-        {"100", "xor"},
-        {"0101", "srl"},
-        {"1101", "sra"},
-        {"110", "or"},
-        {"111", "and"}}},
-    {"STORE", {
-        {"000", "sb"},
-        {"001", "sh"},
-        {"010", "sw"}}}
-};
-
 int main(int argc, char *argv[]) {
-
-    //UEncoding ue("jarl");
-
-    //cout << ue.getName() << endl;
 
     if(argc != 2){
         printError();
@@ -118,46 +68,6 @@ uint32_t getOpcode(uint32_t word){
     return opcode;
 }
 
-void printIEncoding(uint32_t word, string name){
-    
-    uint32_t funct3 = (word >> 12) & 0x7;
-    bitset<3> funct3Bin (funct3);
-    string funct3Str = funct3Bin.to_string();
-    string functName = instructions.at(name).at(funct3Str);
-
-    uint32_t rd = (word >> 7) & 0x1f;
-    string rdStr = "x" + to_string(rd);
-
-    uint32_t rs1 = (word >> 15) & 0x1f;
-    string rs1Str = "x" + to_string(rs1);
-
-    uint32_t imm = (word >> 20) & 0xfff;
-
-    stringstream immHex;
-    immHex << hex << imm;
-
-    cout << functName << " " << rdStr << ", " << rs1Str << ", " << imm << "    // 0x" << immHex.str() << endl;
-}
-
-void printUEncoding(uint32_t word, string name){
-
-    string functName = "";
-  
-    for (char c : name) {
-        functName += tolower(c); 
-    }
-
-    uint32_t rd = (word >> 7) & 0x1f;
-    string rdStr = "x" + to_string(rd);
-
-    uint32_t imm = (word >> 12) & 0xfffff;
-
-    stringstream immHex;
-    immHex << hex << imm;
-
-    cout << functName << " " << rdStr << ", " << imm << "    // 0x" << immHex.str() << endl;
-}
-
 void printResult(vector<uint32_t> words)
 {
 
@@ -172,25 +82,23 @@ void printResult(vector<uint32_t> words)
 
         try {
             array<string, 2>& values = opcode.at(opcStr);
-            cout << setfill('0') << setw(8) << offset.str() << ": ";
 
             if(!values[1].compare("I")){
                 IEncodingInstruction instruction(words.at(i), values[0]);
-                instruction.printInstruction();
-                //printIEncoding(words.at(i), values[0]);
-            }else if(!values[1].compare("U")){
+                instruction.printInstruction(offset.str());
+            }else if(!values[1].compare("U") || !values[1].compare("U_J")){
                 UEncodingInstruction instruction(words.at(i), values[0]);
-                instruction.printInstruction();
-                //printUEncoding(words.at(i), values[0]);
+                instruction.printInstruction(offset.str());
             }else if(!values[1].compare("R")){
                 REncodingInstruction instruction(words.at(i), values[0]);
-                instruction.printInstruction();
-            }else if(!values[1].compare("S")){
+                instruction.printInstruction(offset.str());
+            }else if(!values[1].compare("S") || !values[1].compare("S_B")){
                 SEncodingInstruction instruction(words.at(i), values[0]);
-                instruction.printInstruction();
+                instruction.printInstruction(offset.str());
             }else{
                 cout << endl;
             }
+            
         } catch (const out_of_range& oor) {
             stringstream word;
             word << hex << words.at(i);
