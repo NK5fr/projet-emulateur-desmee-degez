@@ -1,4 +1,4 @@
-#include "../header/UEncodingInstruction.h"
+#include "../../header/disas/UEncodingInstruction.h"
 
 UEncodingInstruction::UEncodingInstruction(uint32_t word, string name) {
   for (char c : name) {
@@ -7,10 +7,6 @@ UEncodingInstruction::UEncodingInstruction(uint32_t word, string name) {
 
   this->rd = (word >> 7) & 0x1f;
   this->imm = (word) & 0xfffff000;
-}
-
-string UEncodingInstruction::getName() {
-  return this->name;
 }
 
 void UEncodingInstruction::printInstruction(){

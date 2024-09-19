@@ -13,6 +13,5 @@ class UEncodingInstruction {
 
   public :
     UEncodingInstruction(uint32_t word, string name) ;
-    string getName();
     void printInstruction();
 } ;

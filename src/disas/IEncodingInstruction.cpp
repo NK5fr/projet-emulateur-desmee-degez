@@ -1,4 +1,4 @@
-#include "../header/IEncodingInstruction.h"
+#include "../../header/disas/IEncodingInstruction.h"
 
 map<string, map<string, string>> IEncodingInstruction::instructions = {
     {"LOAD", {
@@ -39,10 +39,6 @@ IEncodingInstruction::IEncodingInstruction(uint32_t word, string name) {
   }else{
     this->imm = imm32;
   }
-}
-
-string IEncodingInstruction::getName() {
-  return this->name;
 }
 
 void IEncodingInstruction::printInstruction(){

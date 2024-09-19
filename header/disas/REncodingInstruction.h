@@ -6,17 +6,16 @@
 
 using namespace std; 
 
-class SEncodingInstruction {
+class REncodingInstruction {
 
   private :    
     string name;
+    uint32_t rd;
     uint32_t rs1;
     uint32_t rs2;
-    int32_t imm;
 
   public :
     static map<string, map<string, string>> instructions;
-    SEncodingInstruction(uint32_t word, string name) ;
-    string getName();
+    REncodingInstruction(uint32_t word, string name) ;
     void printInstruction();
 } ;

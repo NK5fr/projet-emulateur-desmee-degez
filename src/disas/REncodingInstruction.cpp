@@ -1,4 +1,4 @@
-#include "../header/REncodingInstruction.h"
+#include "../../header/disas/REncodingInstruction.h"
 
 map<string, map<string, string>> REncodingInstruction::instructions = {
     {"OP", {
@@ -23,10 +23,6 @@ REncodingInstruction::REncodingInstruction(uint32_t word, string name) {
   this->rd = (word >> 7) & 0x1f;
   this->rs1 = (word >> 15) & 0x1f;
   this->rs2 = (word >> 20) & 0x1f;
-}
-
-string REncodingInstruction::getName() {
-  return this->name;
 }
 
 void REncodingInstruction::printInstruction(){

@@ -1,4 +1,4 @@
-#include "../header/SEncodingInstruction.h"
+#include "../../header/disas/SEncodingInstruction.h"
 
 map<string, map<string, string>> SEncodingInstruction::instructions = {
     {"BRANCH", {
@@ -31,10 +31,6 @@ SEncodingInstruction::SEncodingInstruction(uint32_t word, string name) {
   }else{
     this->imm = imm32;
   }
-}
-
-string SEncodingInstruction::getName() {
-  return this->name;
 }
 
 void SEncodingInstruction::printInstruction(){

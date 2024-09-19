@@ -17,6 +17,5 @@ class IEncodingInstruction {
   public :
     static map<string, map<string, string>> instructions;
     IEncodingInstruction(uint32_t word, string name) ;
-    string getName();
     void printInstruction();
 } ;

@@ -1,4 +1,4 @@
-#include "../header/riscv-decode.h"
+#include "../../header/decode/riscv-decode.h"
 
 map<string, array<string, 2>> opcode = {
     {"1100011", {"BRANCH", "S_B"}},

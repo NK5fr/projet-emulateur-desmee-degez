@@ -1,8 +1,8 @@
-#include "../header/riscv-decode.h"
-#include "../header/UEncodingInstruction.h"
-#include "../header/IEncodingInstruction.h"
-#include "../header/REncodingInstruction.h"
-#include "../header/SEncodingInstruction.h"
+#include "../../header/disas/riscv-disas.h"
+#include "../../header/disas/UEncodingInstruction.h"
+#include "../../header/disas/IEncodingInstruction.h"
+#include "../../header/disas/REncodingInstruction.h"
+#include "../../header/disas/SEncodingInstruction.h"
 
 map<string, array<string, 2>> opcode = {
     {"1100011", {"BRANCH", "S_B"}},
