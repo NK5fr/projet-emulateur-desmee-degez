@@ -1,5 +1,8 @@
 #include "../header/riscv-decode.h"
-#include "../header/UEncoding.h"
+#include "../header/UEncodingInstruction.h"
+#include "../header/IEncodingInstruction.h"
+#include "../header/REncodingInstruction.h"
+#include "../header/SEncodingInstruction.h"
 
 map<string, array<string, 2>> opcode = {
     {"1100011", {"BRANCH", "S_B"}},
@@ -63,9 +66,9 @@ map<string, map<string, string>> instructions = {
 
 int main(int argc, char *argv[]) {
 
-    UEncoding ue("jarl");
+    //UEncoding ue("jarl");
 
-    cout << ue.getName() << endl;
+    //cout << ue.getName() << endl;
 
     if(argc != 2){
         printError();
@@ -166,18 +169,36 @@ void printResult(vector<uint32_t> words)
         uint32_t opc = getOpcode(words.at(i));
         bitset<7> opcBin (opc);
         string opcStr = opcBin.to_string();
-        array<string, 2>& values = opcode.at(opcStr);
 
-        cout << setfill('0') << setw(8) << offset.str() << ": ";
+        try {
+            array<string, 2>& values = opcode.at(opcStr);
+            cout << setfill('0') << setw(8) << offset.str() << ": ";
 
-        if(!values[1].compare("I")){
-            printIEncoding(words.at(i), values[0]);
-        }else if(!values[1].compare("U")){
-            printUEncoding(words.at(i), values[0]);
-        }else{
-            cout << endl;
+            if(!values[1].compare("I")){
+                IEncodingInstruction instruction(words.at(i), values[0]);
+                instruction.printInstruction();
+                //printIEncoding(words.at(i), values[0]);
+            }else if(!values[1].compare("U")){
+                UEncodingInstruction instruction(words.at(i), values[0]);
+                instruction.printInstruction();
+                //printUEncoding(words.at(i), values[0]);
+            }else if(!values[1].compare("R")){
+                REncodingInstruction instruction(words.at(i), values[0]);
+                instruction.printInstruction();
+            }else if(!values[1].compare("S")){
+                SEncodingInstruction instruction(words.at(i), values[0]);
+                instruction.printInstruction();
+            }else{
+                cout << endl;
+            }
+        } catch (const out_of_range& oor) {
+            stringstream word;
+            word << hex << words.at(i);
+            cout << "Instruction 0x" << setfill('0') << setw(8) << word.str()
+                 << " is not supported at offset " << setfill('0') << setw(8) << offset.str()
+                 << " for word " << setfill('0') << setw(8) << word.str()
+                 << endl;
         }
-
     }
 }
 
