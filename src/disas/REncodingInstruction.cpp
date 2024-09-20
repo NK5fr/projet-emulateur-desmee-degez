@@ -21,13 +21,13 @@ string REncodingInstruction::getName(){
   string funct3Str = funct3Bin.to_string();
 
   if(!funct3Str.compare("101") && !getFunct7().compare("0100000")){
-    return "sub";
-  }else if(!funct3Str.compare("101") && !getFunct7().compare("0000000")){
-    return "add";
-  }else if(!funct3Str.compare("000") && !getFunct7().compare("0100000")){
     return "sra";
-  }else if(!funct3Str.compare("000") && !getFunct7().compare("0000000")){
+  }else if(!funct3Str.compare("101") && !getFunct7().compare("0000000")){
     return "srl";
+  }else if(!funct3Str.compare("000") && !getFunct7().compare("0100000")){
+    return "sub";
+  }else if(!funct3Str.compare("000") && !getFunct7().compare("0000000")){
+    return "add";
   }
 
   return instructions.at(this->name).at(funct3Str);
@@ -56,6 +56,8 @@ string REncodingInstruction::getRs2(){
 }
 
 void REncodingInstruction::printInstruction(string offset){
-  cout << setfill('0') << setw(8) << offset << ": ";
-  cout << getName() << " " << getRd() << ", " << getRs1() << ", " << getRs2() << endl;
+  cout << right << setw(8) << setfill('0') << offset << ": ";
+  ostringstream oss;
+  oss << getRd() << ", " << getRs1() << ", " << getRs2();
+  cout << left << setw(13) << setfill(' ') << getName() << oss.str() << endl;
 }

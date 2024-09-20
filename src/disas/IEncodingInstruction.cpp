@@ -80,11 +80,13 @@ void IEncodingInstruction::printInstruction(string offset){
   stringstream immHex;
   immHex << hex << getImm();
 
-  cout << setfill('0') << setw(8) << offset << ": ";
+  cout << right << setw(8) << setfill('0') << offset << ": ";
 
-  if(!this->name.compare("SYSTEM")){
+  if(!this->name.compare("SYSTEM") || !this->name.compare("MISC-MEM")){
     cout << getName() << endl;
   }else{
-    cout << getName() << " " << getRd() << ", " << getRs1() << ", " << getImm() << "    // 0x" << immHex.str() << endl;
+    ostringstream oss;
+    oss << getRd() << ", " << getRs1() << ", " << getImm();
+    cout << left << setw(13) << setfill(' ') << getName() << left << setw(17) << setfill(' ') << oss.str() << "// 0x" << immHex.str() << endl;
   }
 }

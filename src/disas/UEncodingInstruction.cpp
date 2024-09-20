@@ -47,6 +47,8 @@ void UEncodingInstruction::printInstruction(string offset){
   stringstream immHex;
   immHex << hex << imm;
 
-  cout << setfill('0') << setw(8) << offset << ": ";
-  cout << getName() << " " << getRd() << ", " << imm << "    // 0x" << immHex.str() << endl;
+  cout << right << setw(8) << setfill('0') << offset << ": ";
+  ostringstream oss;
+  oss << getRd() << ", " << imm;
+  cout << left << setw(13) << setfill(' ') << getName() << left << setw(17) << setfill(' ') << oss.str() << "// 0x" << immHex.str() << endl;
 }
