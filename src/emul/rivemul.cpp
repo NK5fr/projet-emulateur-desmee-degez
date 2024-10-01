@@ -1,14 +1,14 @@
 #include "../../header/emul/rivemul.h"
 
-const int DEFAULT_MEMORY_SIZE = 512;
-const int DEFAULT_RESET_ADDR = 0x0;
+#define DEFAULT_MEMORY_SIZE 512;
+#define DEFAULT_RESET_ADDR 0x0;
 
 int main(int argc, char *argv[]) {
     if(argc < 2){
         printError();
         return 1;
     }
-    
+
     int opt;
     int resetAddr = DEFAULT_RESET_ADDR;
     int memSize = DEFAULT_MEMORY_SIZE; 
@@ -44,7 +44,13 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    char memory[memSize * 1024];
+
     cout << argv[optind] << endl;
+    cout << memSize << endl;
+    cout << resetAddr << endl;
+    loadBinaryFile(argv[optind], memory);
+    printMemory(memory);
 
     return 0; 
 }
@@ -92,4 +98,35 @@ void printError(){
 
 void printVersion(){
     cout << "rivemul 0.1" << endl;
+}
+
+void loadBinaryFile(string filePath, char* memory){
+    ifstream file(filePath, ios::in | ios::binary);
+
+    if(!file.is_open()){
+        cout << "Cannot open the file" << endl;
+    }else{  
+
+        uint32_t a;
+
+        file.read((char*)&a, sizeof(a));
+        int index = 0;
+        while(!file.eof()){
+            //cout << hex << a << endl;
+            memory[index] = a;
+
+            file.read((char*)&a, sizeof(a));
+            index+=sizeof(a);
+        }
+
+        file.close();
+    }
+}
+
+void printMemory(char* memory){
+    for(int i = 0; i < sizeof(memory); i+=4){
+        uint32_t* instruction_ptr = (uint32_t *) &memory[i];
+        uint32_t instruction = *instruction_ptr;
+        cout << instruction << endl;
+    }
 }
