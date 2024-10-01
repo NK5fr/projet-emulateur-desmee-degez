@@ -9,12 +9,12 @@ using namespace std;
 
 class SEncodingInstruction {
 
-  private :    
+  private :  
+    static map<string, map<uint32_t, string>> instructions;  
     string name;
     uint32_t word;
 
   public :
-    static map<string, map<uint32_t, string>> instructions;
     SEncodingInstruction(uint32_t word, string name) ;
     string getName();
     string getRs1();
