@@ -14,9 +14,8 @@ class IEncodingInstruction {
     uint32_t word;
 
   public :
-    static map<string, map<string, string>> instructions;
+    static map<string, map<uint32_t, string>> instructions;
     string getName();
-    string getFunct7();
     string getRd();
     string getRs1();
     int32_t getImm();

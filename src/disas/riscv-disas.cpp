@@ -4,18 +4,18 @@
 #include "../../header/disas/REncodingInstruction.h"
 #include "../../header/disas/SEncodingInstruction.h"
 
-map<string, array<string, 2>> opcode = {
-    {"1100011", {"BRANCH", "S_B"}},
-    {"1100111", {"JALR", "I"}},
-    {"0000011", {"LOAD", "I"}},
-    {"0001111", {"MISC-MEM", "I"}},
-    {"0010011", {"OP-IMM", "I"}},
-    {"1110011", {"SYSTEM", "I"}},
-    {"1101111", {"JAL", "U_J"}},
-    {"0110011", {"OP", "R"}},
-    {"0100011", {"STORE", "S"}},
-    {"0010111", {"AUIPC", "U"}},
-    {"0110111", {"LUI", "U"}}
+map<uint32_t, array<string, 2>> opcode = {
+    {99, {"BRANCH", "S_B"}},
+    {103, {"JALR", "I"}},
+    {3, {"LOAD", "I"}},
+    {15, {"MISC-MEM", "I"}},
+    {19, {"OP-IMM", "I"}},
+    {115, {"SYSTEM", "I"}},
+    {111, {"JAL", "U_J"}},
+    {51, {"OP", "R"}},
+    {35, {"STORE", "S"}},
+    {23, {"AUIPC", "U"}},
+    {55, {"LUI", "U"}}
 };
 
 int main(int argc, char *argv[]) {
@@ -77,11 +77,9 @@ void printResult(vector<uint32_t> words)
         offset << hex << i * 4;
 
         uint32_t opc = getOpcode(words.at(i));
-        bitset<7> opcBin (opc);
-        string opcStr = opcBin.to_string();
 
         try {
-            array<string, 2>& values = opcode.at(opcStr);
+            array<string, 2>& values = opcode.at(opc);
 
             if(!values[1].compare("I")){
                 IEncodingInstruction instruction(words.at(i), values[0]);
@@ -102,8 +100,8 @@ void printResult(vector<uint32_t> words)
         } catch (const out_of_range& oor) {
             stringstream word;
             word << hex << words.at(i);
-            cout << "Instruction 0x" << setfill('0') << setw(8) << word.str()
-                 << " is not supported at offset " << setfill('0') << setw(8) << offset.str()
+            cout << "instruction set error: invalid opcode: error value: 0x" << hex << opc
+                 << " at offset " << setfill('0') << setw(8) << offset.str()
                  << " for word " << setfill('0') << setw(8) << word.str()
                  << endl;
         }
