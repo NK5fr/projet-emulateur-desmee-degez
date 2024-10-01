@@ -1,17 +1,17 @@
 #include "../../header/disas/SEncodingInstruction.h"
 
-map<string, map<string, string>> SEncodingInstruction::instructions = {
+map<string, map<uint32_t, string>> SEncodingInstruction::instructions = {
     {"BRANCH", {
-        {"000", "beq"},
-        {"001", "bne"},
-        {"100", "blt"},
-        {"101", "bge"},
-        {"110", "bltu"},
-        {"111", "bgeu"}}},
+        {0, "beq"},
+        {1, "bne"},
+        {4, "blt"},
+        {5, "bge"},
+        {6, "bltu"},
+        {7, "bgeu"}}},
     {"STORE", {
-        {"000", "sb"},
-        {"001", "sh"},
-        {"010", "sw"}}}
+        {0, "sb"},
+        {1, "sh"},
+        {2, "sw"}}}
 };
 
 SEncodingInstruction::SEncodingInstruction(uint32_t word, string name) {
@@ -21,9 +21,7 @@ SEncodingInstruction::SEncodingInstruction(uint32_t word, string name) {
 
 string SEncodingInstruction::getName(){
   uint32_t funct3 = (this->word >> 12) & 0x7;
-  bitset<3> funct3Bin (funct3);
-  string funct3Str = funct3Bin.to_string();
-  return instructions.at(this->name).at(funct3Str);
+  return instructions.at(this->name).at(funct3);
 }
 
 string SEncodingInstruction::getRs1(){

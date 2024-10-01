@@ -1,22 +1,22 @@
 #include "../../header/disas/IEncodingInstruction.h"
 
-map<string, map<string, string>> IEncodingInstruction::instructions = {
+map<string, map<uint32_t, string>> IEncodingInstruction::instructions = {
     {"LOAD", {
-        {"000", "lb"},
-        {"001", "lh"},
-        {"010", "lw"},
-        {"100", "lbu"},
-        {"101", "lhu"},}},
+        {0, "lb"},
+        {1, "lh"},
+        {2, "lw"},
+        {4, "lbu"},
+        {5, "lhu"},}},
     {"MISC-MEM", {
-        {"000", "fence"}}},
+        {0, "fence"}}},
     {"OP-IMM", {
-        {"000", "addi"},
-        {"010", "slti"},
-        {"011", "sltiu"},
-        {"100", "xori"},
-        {"110", "ori"},
-        {"111", "andi"},
-        {"001", "slli"},}}
+        {0, "addi"},
+        {2, "slti"},
+        {3, "sltiu"},
+        {4, "xori"},
+        {6, "ori"},
+        {7, "andi"},
+        {1, "slli"},}}
 };
 
 IEncodingInstruction::IEncodingInstruction(uint32_t word, string name) {
@@ -30,31 +30,20 @@ string IEncodingInstruction::getName(){
   }
 
   uint32_t funct3 = (this->word >> 12) & 0x7;
-  bitset<3> funct3Bin (funct3);
-  string funct3Str = funct3Bin.to_string();
+  int32_t imm = getImm();
+  uint32_t funct7 = (this->word >> 25) & 0x7f;
 
-  bitset<12> ImmBin (getImm());
-  string ImmStr = ImmBin.to_string();
-
-
-
-  if(!this->name.compare("OP-IMM") && !funct3Str.compare("101") && !getFunct7().compare("0100000")){
+  if(!this->name.compare("OP-IMM") && funct3 == 5 && funct7 == 32){
     return "srai";
-  }else if(!this->name.compare("OP-IMM") && !funct3Str.compare("101") && !getFunct7().compare("0000000")){
+  }else if(!this->name.compare("OP-IMM") && funct3 == 5 && funct7 == 0){
     return "srli";
-  }else if(!this->name.compare("SYSTEM") && !ImmStr.compare("000000000000")){
+  }else if(!this->name.compare("SYSTEM") && imm == 0){
     return "ecall";
-  }else if(!this->name.compare("SYSTEM") && !ImmStr.compare("000000000001")){
+  }else if(!this->name.compare("SYSTEM") && imm == 1){
     return "ebreak";
   }
 
-  return instructions.at(this->name).at(funct3Str);
-}
-
-string IEncodingInstruction::getFunct7(){
-  uint32_t funct7 = (this->word >> 25) & 0x7f;
-  bitset<7> funct7Bin (funct7);
-  return funct7Bin.to_string();
+  return instructions.at(this->name).at(funct3);
 }
 
 string IEncodingInstruction::getRd(){

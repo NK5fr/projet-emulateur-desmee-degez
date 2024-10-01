@@ -1,13 +1,13 @@
 #include "../../header/disas/REncodingInstruction.h"
 
-map<string, map<string, string>> REncodingInstruction::instructions = {
+map<string, map<uint32_t, string>> REncodingInstruction::instructions = {
     {"OP", {
-        {"001", "sll"},
-        {"010", "slt"},
-        {"011", "sltu"},
-        {"100", "xor"},
-        {"110", "or"},
-        {"111", "and"}}}
+        {1, "sll"},
+        {2, "slt"},
+        {3, "sltu"},
+        {4, "xor"},
+        {6, "or"},
+        {7, "and"}}}
 };
 
 REncodingInstruction::REncodingInstruction(uint32_t word, string name) {
@@ -17,26 +17,19 @@ REncodingInstruction::REncodingInstruction(uint32_t word, string name) {
 
 string REncodingInstruction::getName(){
   uint32_t funct3 = (this->word >> 12) & 0x7;
-  bitset<3> funct3Bin (funct3);
-  string funct3Str = funct3Bin.to_string();
+  uint32_t funct7 = (this->word >> 25) & 0x7f;
 
-  if(!funct3Str.compare("101") && !getFunct7().compare("0100000")){
+  if(funct3 == 5 && funct7 == 32){
     return "sra";
-  }else if(!funct3Str.compare("101") && !getFunct7().compare("0000000")){
+  }else if(funct3 == 5 && funct7 == 0){
     return "srl";
-  }else if(!funct3Str.compare("000") && !getFunct7().compare("0100000")){
+  }else if(funct3 == 0 && funct7 == 32){
     return "sub";
-  }else if(!funct3Str.compare("000") && !getFunct7().compare("0000000")){
+  }else if(funct3 == 0 && funct7 == 0){
     return "add";
   }
 
-  return instructions.at(this->name).at(funct3Str);
-}
-
-string REncodingInstruction::getFunct7(){
-  uint32_t funct7 = (this->word >> 25) & 0x7f;
-  bitset<7> funct7Bin (funct7);
-  return funct7Bin.to_string();
+  return instructions.at(this->name).at(funct3);
 }
 
 string REncodingInstruction::getRd(){
