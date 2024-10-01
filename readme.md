@@ -1,3 +1,5 @@
+# Livrable 1
+
 Compiler le livrable 1 :
 
 ```bash
@@ -10,6 +12,8 @@ Executer le livrable 1 :
 bin/riscv-decode
 ```
 
+# Livrable 2
+
 Compiler le livrable 2 :
 
 ```bash
@@ -20,4 +24,18 @@ Executer le livrable 2 :
 
 ```bash
 bin/riscv-disas
+```
+
+# Livrable 3
+
+Compiler le livrable 3 :
+
+```bash
+g++ -o bin/rivemul header/emul/* src/emul/*
+```
+
+Executer le livrable 3 :
+
+```bash
+bin/rivemul
 ```
