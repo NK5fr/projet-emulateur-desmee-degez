@@ -1,13 +1,17 @@
 #include "../../header/emul/rivemul.h"
 
+const int DEFAULT_MEMORY_SIZE = 512;
+const int DEFAULT_RESET_ADDR = 0x0;
+
 int main(int argc, char *argv[]) {
     if(argc < 2){
         printError();
         return 1;
     }
+    
     int opt;
-    int resetAddr = 0x0;
-    int memSize = 512; 
+    int resetAddr = DEFAULT_RESET_ADDR;
+    int memSize = DEFAULT_MEMORY_SIZE; 
     bool interactiveMode = false;
 
     struct option long_options[] = {
