@@ -5,7 +5,6 @@
 #include <string> 
 #include <map> 
 #include <array>
-#include "EncodingInstruction.h"
 #include "IEncodingInstruction.h"
 #include "REncodingInstruction.h"
 #include "SEncodingInstruction.h"
@@ -17,7 +16,7 @@ using namespace std;
 class Processor {
     private :
         static map<uint32_t, array<string, 2>> opcode;
-        uint32_t regs[32];
+        int32_t* regs;
         uint32_t pc;
         uint32_t reset;
         Memory* memory;

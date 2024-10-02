@@ -1,9 +1,15 @@
 #ifndef SEncodingInstruction_H
 #define SEncodingInstruction_H
 
-#include "EncodingInstruction.h"
+#include <map>
+#include <iostream> 
+#include <iomanip>
+#include <string>
+#include <sstream> 
 
-class SEncodingInstruction : public EncodingInstruction {
+using namespace std;
+
+class SEncodingInstruction {
 
   private :  
     static map<string, map<uint32_t, string>> instructions;  

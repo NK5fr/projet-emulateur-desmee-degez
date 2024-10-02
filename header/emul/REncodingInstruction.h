@@ -1,11 +1,15 @@
 #ifndef REncodingInstruction_H
 #define REncodingInstruction_H
 
-#include "EncodingInstruction.h"
+#include <map>
+#include <iostream> 
+#include <iomanip>
+#include <string>
+#include <sstream> 
 
 using namespace std; 
 
-class REncodingInstruction : public EncodingInstruction {
+class REncodingInstruction {
 
   private :    
     static map<string, map<uint32_t, string>> instructions;

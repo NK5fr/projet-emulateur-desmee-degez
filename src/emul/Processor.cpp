@@ -15,6 +15,7 @@ map<uint32_t, array<string, 2>> Processor::opcode = {
 };
 
 Processor::Processor(uint32_t pc, uint32_t memorySize, string filename) {
+    this->regs = new int32_t[32];
     this->pc = pc;
     this->reset = reset;
     this->memory = new Memory(memorySize);
@@ -23,8 +24,14 @@ Processor::Processor(uint32_t pc, uint32_t memorySize, string filename) {
 
 
 void Processor::printRegisters(){
+
     for(int i = 0; i < 32; ++i){
-        cout << "x" << i << " : " << regs[i] << endl;
+        cout << "x" << dec << i << " : " << hex << regs[i];
+        if((i+1) % 4 == 0){
+            cout << endl;
+        }else{
+            cout << ", ";
+        }
     }
 }
 
@@ -37,45 +44,34 @@ void Processor::runStepByStep(){
     string command;
     bool continuous = false;
 
-    while(!command.compare("exit")){
+    while(command.compare("exit")){
         printRegisters();
-        cout << "pc : " << this->pc;
+        cout << "pc : " << this->pc << " : ";
 
-        uint32_t word = this->memory->readMemory(this->pc, 4);
+        uint32_t word = this->memory->readMemory(this->pc);
         uint32_t opc = getOpcode(word);
 
         try {
             array<string, 2>& values = opcode.at(opc);
 
-            EncodingInstruction* instructionPtr;
-
             if(!values[1].compare("I")){
-                instructionPtr = new IEncodingInstruction(word, values[0]);
-            }else if(!values[1].compare("U") || !values[1].compare("U_J")){
-                instructionPtr = new UEncodingInstruction(word, values[0]);
-            }else if(!values[1].compare("R")){
-                instructionPtr = new REncodingInstruction(word, values[0]);
-            }else if(!values[1].compare("S") || !values[1].compare("S_B")){
-                instructionPtr = new SEncodingInstruction(word, values[0]);
-            }
-
-            EncodingInstruction instruction = *instructionPtr;
-
-            instruction.printInstruction();
-
-            getline(cin, command);
-
-            if(!command.compare("step")){
+                IEncodingInstruction instruction(word, values[0]);
+                instruction.printInstruction();
                 instruction.execute();
-                this->pc++;
-            }else if(!command.rfind("x/", 0)){ 
-                cout << "x" << endl;
-            }else if(!command.compare("reset")){
-                this->pc = this->reset;
-            }else if(!command.compare("continue")){
-                command = "exit";
-                continuous = true;
+            }else if(!values[1].compare("U") || !values[1].compare("U_J")){
+                UEncodingInstruction instruction(word, values[0]);
+                instruction.printInstruction();
+                instruction.execute();
+            }else if(!values[1].compare("R")){
+                REncodingInstruction instruction(word, values[0]);
+                instruction.printInstruction();
+                instruction.execute();
+            }else if(!values[1].compare("S") || !values[1].compare("S_B")){
+                SEncodingInstruction instruction(word, values[0]);
+                instruction.printInstruction();
+                instruction.execute();
             }
+            
         
         } catch (const out_of_range& oor) {
             stringstream ssword;
@@ -89,6 +85,21 @@ void Processor::runStepByStep(){
             cout << ia.what() << endl;
         }
 
+        cout << "rivemul : ";
+
+        getline(cin, command);
+
+        if(!command.compare("step")){
+            this->pc += 4;
+        }else if(!command.rfind("x/", 0)){ 
+            cout << "x" << endl;
+        }else if(!command.compare("reset")){
+            this->pc = this->reset;
+        }else if(!command.compare("continue")){
+            command = "exit";
+            continuous = true;
+        }
+
     }
 
     if(continuous){
@@ -100,29 +111,27 @@ void Processor::runContinuous(){
     bool run = true;
 
     while(run){
-        uint32_t word = this->memory->readMemory(this->pc, 4);
+        uint32_t word = this->memory->readMemory(this->pc);
         uint32_t opc = getOpcode(word);
 
         try {
             array<string, 2>& values = opcode.at(opc);
 
-            EncodingInstruction* instructionPtr;
-
             if(!values[1].compare("I")){
-                instructionPtr = new IEncodingInstruction(word, values[0]);
+                IEncodingInstruction instruction(word, values[0]);
+                instruction.execute();
             }else if(!values[1].compare("U") || !values[1].compare("U_J")){
-                instructionPtr = new UEncodingInstruction(word, values[0]);
+                UEncodingInstruction instruction(word, values[0]);
+                instruction.execute();
             }else if(!values[1].compare("R")){
-                instructionPtr = new REncodingInstruction(word, values[0]);
+                REncodingInstruction instruction(word, values[0]);
+                instruction.execute();
             }else if(!values[1].compare("S") || !values[1].compare("S_B")){
-                instructionPtr = new SEncodingInstruction(word, values[0]);
+                SEncodingInstruction instruction(word, values[0]);
+                instruction.execute();
             }
 
-            EncodingInstruction instruction = *instructionPtr;
-
-            instruction.execute();
-
-            this->pc++;
+            this->pc += 4;
         
         } catch (const out_of_range& oor) {
             run = false;

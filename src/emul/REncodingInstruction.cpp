@@ -10,7 +10,7 @@ map<string, map<uint32_t, string>> REncodingInstruction::instructions = {
         {7, "and"}}}
 };
 
-REncodingInstruction::REncodingInstruction(uint32_t word, string name) : EncodingInstruction() {
+REncodingInstruction::REncodingInstruction(uint32_t word, string name) {
   this->name = name;
   this->word = word;
 }

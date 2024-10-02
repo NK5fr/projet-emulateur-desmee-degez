@@ -14,7 +14,7 @@ map<string, map<uint32_t, string>> SEncodingInstruction::instructions = {
         {2, "sw"}}}
 };
 
-SEncodingInstruction::SEncodingInstruction(uint32_t word, string name) : EncodingInstruction() {
+SEncodingInstruction::SEncodingInstruction(uint32_t word, string name) {
   this->name = name;
   this->word = word;
 }

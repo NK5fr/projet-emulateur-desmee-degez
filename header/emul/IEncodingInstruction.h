@@ -1,9 +1,15 @@
 #ifndef IEncodingInstruction_H
 #define IEncodingInstruction_H
 
-#include "EncodingInstruction.h"
+#include <map>
+#include <iostream> 
+#include <iomanip>
+#include <string>
+#include <sstream> 
 
-class IEncodingInstruction : public EncodingInstruction {
+using namespace std;
+
+class IEncodingInstruction {
 
   private : 
     static map<string, map<uint32_t, string>> instructions;   

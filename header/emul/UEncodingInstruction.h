@@ -1,11 +1,14 @@
 #ifndef UEncodingInstruction_H
 #define UEncodingInstruction_H
 
-#include "EncodingInstruction.h"
+#include <iostream> 
+#include <iomanip>
+#include <string>
+#include <sstream> 
 
 using namespace std; 
 
-class UEncodingInstruction : public EncodingInstruction {
+class UEncodingInstruction {
 
   private :    
     string name;

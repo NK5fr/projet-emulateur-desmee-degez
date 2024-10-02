@@ -1,6 +1,6 @@
 #include "../../header/emul/UEncodingInstruction.h"
 
-UEncodingInstruction::UEncodingInstruction(uint32_t word, string name) : EncodingInstruction() {
+UEncodingInstruction::UEncodingInstruction(uint32_t word, string name) {
   this->word = word;
   this->name = name;
 }

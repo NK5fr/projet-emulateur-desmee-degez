@@ -19,7 +19,7 @@ map<string, map<uint32_t, string>> IEncodingInstruction::instructions = {
         {1, "slli"},}}
 };
 
-IEncodingInstruction::IEncodingInstruction(uint32_t word, string name) : EncodingInstruction() {
+IEncodingInstruction::IEncodingInstruction(uint32_t word, string name) {
   this->name = name;
   this->word = word;
 }
