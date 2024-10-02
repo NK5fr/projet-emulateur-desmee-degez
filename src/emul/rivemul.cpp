@@ -44,13 +44,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    char memory[memSize * 1024];
-
-    // cout << argv[optind] << endl;
-    // cout << memSize << endl;
-    // cout << resetAddr << endl;
-    loadBinaryFile(argv[optind], memory);
-    printMemory(memory);
+    Processor(resetAddr, memSize, argv[optind]);
 
     return 0; 
 }

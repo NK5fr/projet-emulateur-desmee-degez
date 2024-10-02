@@ -1,8 +1,4 @@
 #include "../../header/disas/riscv-disas.h"
-#include "../../header/disas/UEncodingInstruction.h"
-#include "../../header/disas/IEncodingInstruction.h"
-#include "../../header/disas/REncodingInstruction.h"
-#include "../../header/disas/SEncodingInstruction.h"
 
 map<uint32_t, array<string, 2>> opcode = {
     {99, {"BRANCH", "S_B"}},

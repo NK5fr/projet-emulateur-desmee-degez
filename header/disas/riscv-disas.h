@@ -6,6 +6,10 @@
 #include <array>
 #include <string>          
 #include <bitset>
+#include "UEncodingInstruction.h"
+#include "IEncodingInstruction.h"
+#include "REncodingInstruction.h"
+#include "SEncodingInstruction.h"
 
 using namespace std; 
 

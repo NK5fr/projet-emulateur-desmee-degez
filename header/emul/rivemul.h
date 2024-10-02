@@ -2,6 +2,7 @@
 #include <iostream>
 #include <getopt.h>
 #include <fstream>
+#include "Processor.h"
 
 using namespace std;
 
