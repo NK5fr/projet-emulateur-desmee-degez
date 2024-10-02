@@ -84,7 +84,7 @@ void IEncodingInstruction::printInstruction(){
   }
 }
 
-void IEncodingInstruction::execute(int32_t* regs){
+void IEncodingInstruction::execute(int32_t* regs, uint32_t* pc){
   string name = getName();
 
   if(!name.compare("lb")){

@@ -24,7 +24,7 @@ class REncodingInstruction : public Instruction {
     uint32_t getRs1();
     uint32_t getRs2();
     void printInstruction() override;
-    void execute(int32_t* regs) override;
+    void execute(int32_t* regs, uint32_t* pc) override;
 } ;
 
 #endif
