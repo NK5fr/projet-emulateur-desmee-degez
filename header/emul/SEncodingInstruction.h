@@ -6,10 +6,11 @@
 #include <iomanip>
 #include <string>
 #include <sstream> 
+#include "Instruction.h"
 
 using namespace std;
 
-class SEncodingInstruction {
+class SEncodingInstruction : public Instruction {
 
   private :  
     static map<string, map<uint32_t, string>> instructions;  
@@ -23,8 +24,8 @@ class SEncodingInstruction {
     uint32_t getRs1();
     uint32_t getRs2();
     int32_t getImm();
-    void printInstruction();
-    void execute();
+    void printInstruction() override;
+    void execute() override;
 } ;
 
 #endif

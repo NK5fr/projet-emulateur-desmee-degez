@@ -5,6 +5,7 @@
 #include <string> 
 #include <map> 
 #include <array>
+#include "Instruction.h"
 #include "IEncodingInstruction.h"
 #include "REncodingInstruction.h"
 #include "SEncodingInstruction.h"

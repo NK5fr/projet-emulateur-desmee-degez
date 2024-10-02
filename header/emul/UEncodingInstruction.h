@@ -5,10 +5,11 @@
 #include <iomanip>
 #include <string>
 #include <sstream> 
+#include "Instruction.h"
 
 using namespace std; 
 
-class UEncodingInstruction {
+class UEncodingInstruction : public Instruction {
 
   private :    
     string name;
@@ -20,8 +21,8 @@ class UEncodingInstruction {
     string getName();
     uint32_t getRd();
     int32_t getImm();
-    void printInstruction();
-    void execute();
+    void printInstruction() override;
+    void execute() override;
 } ;
 
 #endif

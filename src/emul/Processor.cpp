@@ -51,28 +51,24 @@ void Processor::runStepByStep(){
         uint32_t word = this->memory->readMemory(this->pc, 4);
         uint32_t opc = getOpcode(word);
 
+        Instruction* instruction = nullptr;
+
         try {
             array<string, 2>& values = opcode.at(opc);
 
             if(!values[1].compare("I")){
-                IEncodingInstruction instruction(word, values[0]);
-                instruction.printInstruction();
-                instruction.execute();
+                instruction = new IEncodingInstruction(word, values[0]);
             }else if(!values[1].compare("U") || !values[1].compare("U_J")){
-                UEncodingInstruction instruction(word, values[0]);
-                instruction.printInstruction();
-                instruction.execute();
+                instruction = new UEncodingInstruction(word, values[0]);
             }else if(!values[1].compare("R")){
-                REncodingInstruction instruction(word, values[0]);
-                instruction.printInstruction();
-                instruction.execute();
+                instruction = new REncodingInstruction(word, values[0]);
             }else if(!values[1].compare("S") || !values[1].compare("S_B")){
-                SEncodingInstruction instruction(word, values[0]);
-                instruction.printInstruction();
-                instruction.execute();
+                instruction = new SEncodingInstruction(word, values[0]);
             }
-            
-        
+
+            if (instruction) {
+                instruction->printInstruction();
+            }
         } catch (const out_of_range& oor) {
             stringstream ssword;
             ssword << hex << word;
@@ -81,25 +77,31 @@ void Processor::runStepByStep(){
                 << endl;
         } catch (const length_error& le) {
             cout << le.what() << endl;
-        } catch (const invalid_argument& ia) {
+        }
+
+        try {
+            cout << "rivemul : ";
+            getline(cin, command);
+
+            if (!command.compare("step")) {
+                if (instruction) {
+                    instruction->execute();
+                }
+                this->pc += 4;
+            } else if (!command.rfind("x/", 0)) { 
+                cout << "x" << endl;
+            } else if (!command.compare("reset")) {
+                this->pc = this->reset;
+            } else if (!command.compare("continue")) {
+                if (instruction) {
+                    instruction->execute();
+                }
+                command = "exit";
+                continuous = true;
+            }
+        }catch (const invalid_argument& ia) {
             cout << ia.what() << endl;
         }
-
-        cout << "rivemul : ";
-
-        getline(cin, command);
-
-        if(!command.compare("step")){
-            this->pc += 4;
-        }else if(!command.rfind("x/", 0)){ 
-            cout << "x" << endl;
-        }else if(!command.compare("reset")){
-            this->pc = this->reset;
-        }else if(!command.compare("continue")){
-            command = "exit";
-            continuous = true;
-        }
-
     }
 
     if(continuous){
