@@ -21,7 +21,16 @@ SEncodingInstruction::SEncodingInstruction(uint32_t word, string name) : Encodin
 
 string SEncodingInstruction::getName(){
   uint32_t funct3 = (this->word >> 12) & 0x7;
-  return instructions.at(this->name).at(funct3);
+
+  try{
+    return instructions.at(this->name).at(funct3);
+  }catch (const out_of_range& oor){
+    stringstream ssword;
+    ssword << hex << word;
+    stringstream message;
+    message << "instruction set error: invalid intruction: error funct3 : " << funct3 << " for opcode " << this->name << " for word " << setfill('0') << setw(8) << ssword.str();
+    throw invalid_argument(message.str());
+  }
 }
 
 uint32_t SEncodingInstruction::getRs1(){

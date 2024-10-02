@@ -43,7 +43,15 @@ string IEncodingInstruction::getName(){
     return "ebreak";
   }
 
-  return instructions.at(this->name).at(funct3);
+  try{
+    return instructions.at(this->name).at(funct3);
+  }catch (const out_of_range& oor){
+    stringstream ssword;
+    ssword << hex << word;
+    stringstream message;
+    message << "instruction set error: invalid intruction: error funct3 : " << funct3 << ", funct7 : " << funct7 << ", imm : " << imm << " for opcode " << this->name << " for word " << setfill('0') << setw(8) << ssword.str();
+    throw invalid_argument(message.str());
+  }
 }
 
 uint32_t IEncodingInstruction::getRd(){
