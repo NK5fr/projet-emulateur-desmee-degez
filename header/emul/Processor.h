@@ -10,6 +10,7 @@
 #include "REncodingInstruction.h"
 #include "SEncodingInstruction.h"
 #include "UEncodingInstruction.h"
+#include "Memory.h"
 
 using namespace std; 
 
@@ -19,15 +20,14 @@ class Processor {
         uint32_t regs[32];
         uint32_t pc;
         uint32_t reset;
-        char* memory;
         bool run = true;
+        Memory* memory;
 
         void printRegisters();
         uint32_t getOpcode(uint32_t word);
-        uint32_t readMemory(int start, int size);
     
     public :
-        Processor(uint32_t pc, uint32_t memory);
+        Processor(uint32_t pc, uint32_t memory, string filename);
         void runContinuous();
         void runStepByStep();
 };

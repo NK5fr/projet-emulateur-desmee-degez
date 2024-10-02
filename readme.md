@@ -39,3 +39,32 @@ Executer le livrable 3 :
 ```bash
 bin/rivemul
 ```
+
+void loadBinaryFile(string filePath, char* memory){
+    ifstream file(filePath, ios::in | ios::binary);
+
+    if(!file.is_open()){
+        cout << "Cannot open the file" << endl;
+    }else{  
+
+        char* a;
+
+        file.read(a, 1);
+        int index = 0;
+        while(!file.eof()){
+            //cout << hex << a << endl;
+            memory[index] = *a;
+
+            file.read(a, 1);
+            index+=sizeof(a);
+        }
+
+        file.close();
+    }
+}
+
+void printMemory(char* memory){
+    for(int i = 0; i < sizeof(memory); ++i){
+        cout << hex << memory[i] << endl;
+    }
+}

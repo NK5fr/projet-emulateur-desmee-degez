@@ -14,10 +14,10 @@ map<uint32_t, array<string, 2>> Processor::opcode = {
     {55, {"LUI", "U"}}
 };
 
-Processor::Processor(uint32_t pc, uint32_t memory) {
+Processor::Processor(uint32_t pc, uint32_t memory, string filename) {
     this->pc = pc;
     this->reset = reset;
-    this->memory = new char[memory * 1024];
+    this->memory = new Memory(memory, filename);
 }
 
 
@@ -32,14 +32,6 @@ uint32_t Processor::getOpcode(uint32_t word){
     return opcode;
 }
 
-uint32_t Processor::readMemory(int start, int size){
-    uint32_t res = 0;
-    for(int i = 0; i < size; ++i){
-        res = res | (this->memory[start + i] << 8 * i);
-    }
-    return res;
-}
-
 void Processor::runStepByStep(){
     string command;
     bool continuous = false;
@@ -48,7 +40,7 @@ void Processor::runStepByStep(){
         printRegisters();
         cout << "pc : " << this->pc;
 
-        uint32_t word = readMemory(this->pc, 4);
+        uint32_t word = this->memory->readMemory(this->pc, 4);
         uint32_t opc = getOpcode(word);
 
         try {
@@ -97,7 +89,7 @@ void Processor::runStepByStep(){
 
 void Processor::runContinuous(){
     while(this->run){
-        uint32_t word = readMemory(this->pc, 4);
+        uint32_t word = this->memory->readMemory(this->pc, 4);
         uint32_t opc = getOpcode(word);
 
         try {
