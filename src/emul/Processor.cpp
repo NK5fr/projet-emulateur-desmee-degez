@@ -83,13 +83,21 @@ void Processor::runStepByStep(){
             cout << "instruction set error: invalid opcode: error value: 0x" << hex << opc
                 << " for word " << setfill('0') << setw(8) << ssword.str()
                 << endl;
+        } catch (const length_error& le) {
+            cout << le << endl;
         }
 
+    }
+
+    if(continuous){
+        runContinuous();
     }
 }
 
 void Processor::runContinuous(){
-    while(this->run){
+    bool run = true
+
+    while(run){
         uint32_t word = this->memory->readMemory(this->pc, 4);
         uint32_t opc = getOpcode(word);
 
@@ -115,6 +123,7 @@ void Processor::runContinuous(){
             this->pc++;
         
         } catch (const out_of_range& oor) {
+            run = false;
             stringstream ssword;
             ssword << hex << word;
             cout << "instruction set error: invalid opcode: error value: 0x" << hex << opc
@@ -122,5 +131,7 @@ void Processor::runContinuous(){
                 << endl;
         }
     }
+
+    runStepByStep();
 }
 

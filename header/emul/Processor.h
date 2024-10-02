@@ -20,7 +20,6 @@ class Processor {
         uint32_t regs[32];
         uint32_t pc;
         uint32_t reset;
-        bool run = true;
         Memory* memory;
 
         void printRegisters();
