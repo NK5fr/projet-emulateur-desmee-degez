@@ -11,6 +11,7 @@
 #include "SEncodingInstruction.h"
 #include "UEncodingInstruction.h"
 #include "Memory.h"
+#include <vector>
 
 using namespace std; 
 
@@ -24,6 +25,7 @@ class Processor {
 
         void printRegisters();
         uint32_t getOpcode(uint32_t word);
+        vector<string> split(const string& str, char delimiter);
     
     public :
         Processor(uint32_t pc, uint32_t memorySize, string filename);

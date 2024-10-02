@@ -90,7 +90,11 @@ void Processor::runStepByStep(){
                 }
                 this->pc += 4;
             } else if (!command.rfind("x/", 0)) { 
-                cout << "x" << endl;
+                vector<string> splitedString = split(command, ' ');
+                int count = stoi(split(splitedString.at(0), '/').at(1));
+                int adress = stoi(splitedString.at(1));
+                uint32_t res = this->memory->readMemory(adress, count);
+                cout << res << endl;
             } else if (!command.compare("reset")) {
                 this->pc = this->reset;
             } else if (!command.compare("continue")) {
@@ -151,5 +155,16 @@ void Processor::runContinuous(){
     }
 
     runStepByStep();
+}
+
+vector<string> Processor::split(const string& str, char delimiter) {
+    stringstream ss(str);
+    vector<string> splitedString;
+    string element;
+    while (getline(ss, element, delimiter)) {
+        splitedString.push_back(element);
+    }
+
+    return splitedString;
 }
 
