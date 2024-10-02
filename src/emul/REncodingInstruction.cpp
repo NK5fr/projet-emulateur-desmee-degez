@@ -59,7 +59,7 @@ void REncodingInstruction::printInstruction(){
   cout << left << setw(13) << setfill(' ') << getName() << oss.str() << endl;
 }
 
-void REncodingInstruction::execute(int32_t* regs, uint32_t* pc){
+void REncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){
   string name = getName();
 
   if(!name.compare("add")){

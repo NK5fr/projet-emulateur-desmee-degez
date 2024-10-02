@@ -84,7 +84,7 @@ void IEncodingInstruction::printInstruction(){
   }
 }
 
-void IEncodingInstruction::execute(int32_t* regs, uint32_t* pc){
+void IEncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){
   string name = getName();
 
   if(!name.compare("lb")){
@@ -104,17 +104,17 @@ void IEncodingInstruction::execute(int32_t* regs, uint32_t* pc){
   }else if(!name.compare("sltiu")){
     regs[getRd()] = (uint32_t) regs[getRs1()] < (uint32_t) getImm();  
   }else if(!name.compare("xori")){
-      cout << "xori" << endl;
+      regs[getRd()] = regs[getRs1()] ^ getImm();
   }else if(!name.compare("ori")){
-      cout << "ori" << endl;
+    regs[getRd()] = regs[getRs1()] | getImm();
   }else if(!name.compare("andi")){
-      cout << "andi" << endl;
+    regs[getRd()] = regs[getRs1()] & getImm();
   }else if(!name.compare("slli")){
-      cout << "slli" << endl;
+    regs[getRd()] = (uint32_t) regs[getRs1()] << getImm();
   }else if(!name.compare("srli")){
-      cout << "srli" << endl;
+    regs[getRd()] = (uint32_t) regs[getRs1()] >> getImm();
   }else if(!name.compare("srai")){
-      cout << "srai" << endl;
+    regs[getRd()] = regs[getRs1()] >> getImm();
   }else if(!name.compare("jalr")){
       cout << "jalr" << endl;
   }else if(!name.compare("ebreak")){

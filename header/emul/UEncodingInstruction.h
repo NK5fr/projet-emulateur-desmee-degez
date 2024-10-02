@@ -22,7 +22,7 @@ class UEncodingInstruction : public Instruction {
     uint32_t getRd();
     int32_t getImm();
     void printInstruction() override;
-    void execute(int32_t* regs, uint32_t* pc) override;
+    void execute(int32_t* regs, uint32_t* pc, Memory* memory) override;
 } ;
 
 #endif
