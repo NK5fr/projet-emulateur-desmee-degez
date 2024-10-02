@@ -75,8 +75,9 @@ void Processor::runStepByStep(){
             cout << "instruction set error: invalid opcode: error value: 0x" << hex << opc
                 << " for word " << setfill('0') << setw(8) << ssword.str()
                 << endl;
-        } catch (const length_error& le) {
-            cout << le.what() << endl;
+        }catch (const invalid_argument& ia) {
+            cout << ia.what() << endl;
+            instruction = nullptr;
         }
 
         try {
@@ -85,7 +86,7 @@ void Processor::runStepByStep(){
 
             if (!command.compare("step")) {
                 if (instruction) {
-                    instruction->execute();
+                    instruction->execute(this->regs);
                 }
                 this->pc += 4;
             } else if (!command.rfind("x/", 0)) { 
@@ -94,13 +95,13 @@ void Processor::runStepByStep(){
                 this->pc = this->reset;
             } else if (!command.compare("continue")) {
                 if (instruction) {
-                    instruction->execute();
+                    instruction->execute(this->regs);
                 }
                 command = "exit";
                 continuous = true;
             }
-        }catch (const invalid_argument& ia) {
-            cout << ia.what() << endl;
+        } catch (const length_error& le) {
+            cout << le.what() << endl;
         }
     }
 
@@ -121,16 +122,16 @@ void Processor::runContinuous(){
 
             if(!values[1].compare("I")){
                 IEncodingInstruction instruction(word, values[0]);
-                instruction.execute();
+                instruction.execute(this->regs);
             }else if(!values[1].compare("U") || !values[1].compare("U_J")){
                 UEncodingInstruction instruction(word, values[0]);
-                instruction.execute();
+                instruction.execute(this->regs);
             }else if(!values[1].compare("R")){
                 REncodingInstruction instruction(word, values[0]);
-                instruction.execute();
+                instruction.execute(this->regs);
             }else if(!values[1].compare("S") || !values[1].compare("S_B")){
                 SEncodingInstruction instruction(word, values[0]);
-                instruction.execute();
+                instruction.execute(this->regs);
             }
 
             this->pc += 4;

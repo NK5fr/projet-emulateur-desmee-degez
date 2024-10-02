@@ -59,25 +59,25 @@ void REncodingInstruction::printInstruction(){
   cout << left << setw(13) << setfill(' ') << getName() << oss.str() << endl;
 }
 
-void REncodingInstruction::execute(){
+void REncodingInstruction::execute(int32_t* regs){
   string name = getName();
 
   if(!name.compare("add")){
-      cout << "add" << endl;
+    regs[getRd()] = regs[getRs1()] + regs[getRs2()];
   }else if(!name.compare("sub")){
-      cout << "sub" << endl;
+    regs[getRd()] = regs[getRs1()] - regs[getRs2()];
   }else if(!name.compare("sll")){
-      cout << "sll" << endl;
+    regs[getRd()] = (uint32_t) regs[getRs1()] << regs[getRs2()];
   }else if(!name.compare("slt")){
-      cout << "slt" << endl;
+    
   }else if(!name.compare("sltu")){
       cout << "sltu" << endl;
   }else if(!name.compare("xor")){
       cout << "xor" << endl;
   }else if(!name.compare("srl")){
-      cout << "srl" << endl;
+    regs[getRd()] = (uint32_t) regs[getRs1()] >> regs[getRs2()];
   }else if(!name.compare("sra")){
-      cout << "sra" << endl;
+    regs[getRd()] = regs[getRs1()] >> regs[getRs2()];
   }else if(!name.compare("or")){
       cout << "or" << endl;
   }else{

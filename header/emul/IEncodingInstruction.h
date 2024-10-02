@@ -24,7 +24,7 @@ class IEncodingInstruction : public Instruction{
     uint32_t getRs1();
     int32_t getImm();
     void printInstruction() override;
-    void execute() override;
+    void execute(int32_t* regs) override;
 } ;
 
 #endif

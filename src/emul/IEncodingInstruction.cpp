@@ -84,7 +84,7 @@ void IEncodingInstruction::printInstruction(){
   }
 }
 
-void IEncodingInstruction::execute(){
+void IEncodingInstruction::execute(int32_t* regs){
   string name = getName();
 
   if(!name.compare("lb")){
@@ -98,7 +98,7 @@ void IEncodingInstruction::execute(){
   }else if(!name.compare("lhu")){
       cout << "lhu" << endl;
   }else if(!name.compare("addi")){
-      cout << "addi" << endl;
+    regs[getRd()] = regs[getRs1()] + getImm();
   }else if(!name.compare("slti")){
       cout << "slti" << endl;
   }else if(!name.compare("sltiu")){

@@ -78,7 +78,7 @@ void SEncodingInstruction::printInstruction(){
   cout << left << setw(13) << setfill(' ') << getName() << left << setw(17) << setfill(' ') << oss.str() << "// 0x" << immHex.str() << endl;
 }
 
-void SEncodingInstruction::execute(){
+void SEncodingInstruction::execute(int32_t* regs){
   string name = getName();
 
   if(!name.compare("beq")){
