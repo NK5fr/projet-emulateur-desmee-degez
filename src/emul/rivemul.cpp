@@ -113,7 +113,9 @@ void loadBinaryFile(string filePath, char* memory){
         int index = 0;
         while(!file.eof()){
             //cout << hex << a << endl;
-            memory[index] = *a;
+            for(int i = 0; i<4;i++){
+                memory[index+i] = (a >> (i*8)) & 0xFF;
+            }
 
             file.read(a, 1);
             index+=sizeof(a);
@@ -124,7 +126,9 @@ void loadBinaryFile(string filePath, char* memory){
 }
 
 void printMemory(char* memory){
-    for(int i = 0; i < sizeof(memory); ++i){
-        cout << hex << memory[i] << endl;
+    for(int i = 0; i < 512; i+=4){
+        uint32_t* instruction_ptr = (uint32_t *) &memory[i];
+        uint32_t instruction = *instruction_ptr;
+        cout << instruction << endl;
     }
 }
