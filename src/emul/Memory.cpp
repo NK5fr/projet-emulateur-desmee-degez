@@ -12,15 +12,17 @@ void Memory::loadFile(string filename){
         cout << "Cannot open the file" << endl;
     }else{  
 
-        char* a;
+        uint32_t a;
 
-        file.read(a, 1);
+        file.read((char*)&a, sizeof(a));
         int index = 0;
         while(!file.eof() && index < this->size * 1024){
+            for(int i = 0; i<4;i++){
+                this->memory[index+i] = (a >> (i*8)) & 0xFF;
+            }
 
-            this->memory[index] = *a;
-            file.read(a, 1);
-            index++;
+            file.read((char*)&a, sizeof(a));
+            index+=sizeof(a);
         }
 
         file.close();
@@ -30,12 +32,15 @@ void Memory::loadFile(string filename){
                  << " est trop grand pour être chargé dans une mémoire de " << this->size << "KB"
                  << " veuillez agrandir la mémoire pour charger complétement ce fichier" << endl;
         }
-
-        cout << hex << readMemory(0) << endl;
     }
 }
 
-uint32_t Memory::readMemory(int start){
-    uint32_t* instruction_ptr = (uint32_t *) this->memory[start];
-    return *instruction_ptr;
+uint32_t Memory::readMemory(int start, int size){
+    uint32_t res = 0;
+    for(int i = 0; i < size; ++i){
+        uint32_t n = (uint32_t) this->memory[start + i];
+        n = n & 0xff;
+        res = res | (n << 8 * i);
+    }
+    return res;
 }

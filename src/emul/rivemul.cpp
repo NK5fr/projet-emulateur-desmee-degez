@@ -4,6 +4,7 @@
 #define DEFAULT_RESET_ADDR 0x0;
 
 int main(int argc, char *argv[]) {
+
     if(argc < 2){
         printError();
         return 1;
@@ -53,14 +54,12 @@ int main(int argc, char *argv[]) {
     }
     */
 
-    /*
     Processor processor(resetAddr, memSize, argv[optind]);
     if(interactiveMode){
         processor.runStepByStep();
     }else{
         processor.runContinuous();
     }
-    */
 
     return 0; 
 }

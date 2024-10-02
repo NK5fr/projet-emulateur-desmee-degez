@@ -48,7 +48,7 @@ void Processor::runStepByStep(){
         printRegisters();
         cout << "pc : " << this->pc << " : ";
 
-        uint32_t word = this->memory->readMemory(this->pc);
+        uint32_t word = this->memory->readMemory(this->pc, 4);
         uint32_t opc = getOpcode(word);
 
         try {
@@ -111,7 +111,7 @@ void Processor::runContinuous(){
     bool run = true;
 
     while(run){
-        uint32_t word = this->memory->readMemory(this->pc);
+        uint32_t word = this->memory->readMemory(this->pc, 4);
         uint32_t opc = getOpcode(word);
 
         try {
