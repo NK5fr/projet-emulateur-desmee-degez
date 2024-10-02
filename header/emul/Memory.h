@@ -9,9 +9,10 @@ class Memory {
 
     private :
         char* memory;
+        int size;
     
     public :
-        Memory(uint32_t size, string filename);
+        Memory(uint32_t size);
         void loadFile(string filename);
         uint32_t readMemory(int start, int size);
 };

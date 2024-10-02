@@ -17,7 +17,8 @@ map<uint32_t, array<string, 2>> Processor::opcode = {
 Processor::Processor(uint32_t pc, uint32_t memory, string filename) {
     this->pc = pc;
     this->reset = reset;
-    this->memory = new Memory(memory, filename);
+    this->memory = new Memory(memory);
+    this->memory->loadFile(filename);
 }
 
 

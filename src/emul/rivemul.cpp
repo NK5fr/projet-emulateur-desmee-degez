@@ -46,9 +46,9 @@ int main(int argc, char *argv[]) {
 
     char memory[memSize * 1024];
 
-    cout << argv[optind] << endl;
-    cout << memSize << endl;
-    cout << resetAddr << endl;
+    // cout << argv[optind] << endl;
+    // cout << memSize << endl;
+    // cout << resetAddr << endl;
     loadBinaryFile(argv[optind], memory);
     printMemory(memory);
 
@@ -98,37 +98,4 @@ void printError(){
 
 void printVersion(){
     cout << "rivemul 0.1" << endl;
-}
-
-void loadBinaryFile(string filePath, char* memory){
-    ifstream file(filePath, ios::in | ios::binary);
-
-    if(!file.is_open()){
-        cout << "Cannot open the file" << endl;
-    }else{  
-
-        char* a;
-
-        file.read(a, 1);
-        int index = 0;
-        while(!file.eof()){
-            //cout << hex << a << endl;
-            for(int i = 0; i<4;i++){
-                memory[index+i] = (a >> (i*8)) & 0xFF;
-            }
-
-            file.read(a, 1);
-            index+=sizeof(a);
-        }
-
-        file.close();
-    }
-}
-
-void printMemory(char* memory){
-    for(int i = 0; i < 512; i+=4){
-        uint32_t* instruction_ptr = (uint32_t *) &memory[i];
-        uint32_t instruction = *instruction_ptr;
-        cout << instruction << endl;
-    }
 }
