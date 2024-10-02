@@ -100,9 +100,9 @@ void IEncodingInstruction::execute(int32_t* regs){
   }else if(!name.compare("addi")){
     regs[getRd()] = regs[getRs1()] + getImm();
   }else if(!name.compare("slti")){
-      cout << "slti" << endl;
+    regs[getRd()] = regs[getRs1()] < getImm();  
   }else if(!name.compare("sltiu")){
-      cout << "sltiu" << endl;
+    regs[getRd()] = (uint32_t) regs[getRs1()] < (uint32_t) getImm();  
   }else if(!name.compare("xori")){
       cout << "xori" << endl;
   }else if(!name.compare("ori")){
