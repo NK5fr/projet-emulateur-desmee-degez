@@ -84,7 +84,9 @@ void Processor::runStepByStep(){
                 << " for word " << setfill('0') << setw(8) << ssword.str()
                 << endl;
         } catch (const length_error& le) {
-            cout << le << endl;
+            cout << le.what() << endl;
+        } catch (const invalid_argument& ia) {
+            cout << ia.what() << endl;
         }
 
     }
@@ -95,7 +97,7 @@ void Processor::runStepByStep(){
 }
 
 void Processor::runContinuous(){
-    bool run = true
+    bool run = true;
 
     while(run){
         uint32_t word = this->memory->readMemory(this->pc, 4);
@@ -129,6 +131,10 @@ void Processor::runContinuous(){
             cout << "instruction set error: invalid opcode: error value: 0x" << hex << opc
                 << " for word " << setfill('0') << setw(8) << ssword.str()
                 << endl;
+        } catch (const length_error& le) {
+            cout << le.what() << endl;
+        } catch (const invalid_argument& ia) {
+            cout << ia.what() << endl;
         }
     }
 
