@@ -14,10 +14,10 @@ map<uint32_t, array<string, 2>> Processor::opcode = {
     {55, {"LUI", "U"}}
 };
 
-Processor::Processor(uint32_t pc, uint32_t memory, string filename) {
+Processor::Processor(uint32_t pc, uint32_t memorySize, string filename) {
     this->pc = pc;
     this->reset = reset;
-    this->memory = new Memory(memory);
+    this->memory = new Memory(memorySize);
     this->memory->loadFile(filename);
 }
 

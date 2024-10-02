@@ -27,7 +27,7 @@ class Processor {
         uint32_t getOpcode(uint32_t word);
     
     public :
-        Processor(uint32_t pc, uint32_t memory, string filename);
+        Processor(uint32_t pc, uint32_t memorySize, string filename);
         void runContinuous();
         void runStepByStep();
 };

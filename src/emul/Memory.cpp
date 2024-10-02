@@ -6,7 +6,7 @@ Memory::Memory(uint32_t size){
 }
 
 void Memory::loadFile(string filename){
-    ifstream file(filePath, ios::in | ios::binary);
+    ifstream file(filename, ios::in | ios::binary);
 
     if(!file.is_open()){
         cout << "Cannot open the file" << endl;
