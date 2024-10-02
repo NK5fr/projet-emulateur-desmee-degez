@@ -44,7 +44,12 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    Processor(resetAddr, memSize, argv[optind]);
+    Processor processor(resetAddr, memSize, argv[optind]);
+    if(interactiveMode){
+        processor.runStepByStep();
+    }else{
+        processor.runContinuous();
+    }
 
     return 0; 
 }
