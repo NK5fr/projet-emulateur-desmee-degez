@@ -35,7 +35,7 @@ void Memory::loadFile(string filename){
     }
 }
 
-uint32_t Memory::readMemory(int start, int size){
+uint32_t Memory::readMemory(int start, int size, bool isSigned){
 
     if(start + size > this->size * 1024){
         stringstream message;
@@ -48,6 +48,12 @@ uint32_t Memory::readMemory(int start, int size){
         uint32_t n = (uint32_t) this->memory[start + i];
         n = n & 0xff;
         res = res | (n << 8 * i);
+    }
+
+    if(isSigned){
+        if((res >> size*8-1) & 1){
+            res = res | (0xffffffff << 8*size); 
+        }
     }
     return res;
 }

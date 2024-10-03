@@ -88,15 +88,20 @@ void IEncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){
   string name = getName();
 
   if(!name.compare("lb")){
-      cout << "lb" << endl;
+    int32_t start = regs[getRs1()] + getImm();
+    regs[getRd()] = memory->readMemory(start, 1, true);
   }else if(!name.compare("lh")){
-      cout << "lh" << endl;
+    int32_t start = regs[getRs1()] + getImm();
+    regs[getRd()] = memory->readMemory(start, 2, true);
   }else if(!name.compare("lw")){
-      cout << "lw" << endl;
+    int32_t start = regs[getRs1()] + getImm();
+    regs[getRd()] = memory->readMemory(start, 4);
   }else if(!name.compare("lbu")){
-      cout << "lbu" << endl;
+    int32_t start = regs[getRs1()] + getImm();
+    regs[getRd()] = memory->readMemory(start, 1);
   }else if(!name.compare("lhu")){
-      cout << "lhu" << endl;
+    int32_t start = regs[getRs1()] + getImm();
+    regs[getRd()] = memory->readMemory(start, 2);
   }else if(!name.compare("addi")){
     regs[getRd()] = regs[getRs1()] + getImm();
   }else if(!name.compare("slti")){

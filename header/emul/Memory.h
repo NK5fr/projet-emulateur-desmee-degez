@@ -16,7 +16,7 @@ class Memory {
     public :
         Memory(uint32_t size);
         void loadFile(string filename);
-        uint32_t readMemory(int start, int size);
+        uint32_t readMemory(int start, int size, bool isSigned=false);
         void writeMemory(int start, int size, int32_t word);
 };
 
