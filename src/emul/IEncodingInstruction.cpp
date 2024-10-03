@@ -86,43 +86,46 @@ void IEncodingInstruction::printInstruction(){
 
 void IEncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){
   string name = getName();
+  uint32_t rd = getRd();
+  uint32_t rs1 = getRs1();
+  int32_t imm = getImm();
 
   if(!name.compare("lb")){
-    int32_t start = regs[getRs1()] + getImm();
-    regs[getRd()] = memory->readMemory(start, 1, true);
+    int32_t start = regs[rs1] + imm;
+    regs[rd] = memory->readMemory(start, 1, true);
   }else if(!name.compare("lh")){
-    int32_t start = regs[getRs1()] + getImm();
-    regs[getRd()] = memory->readMemory(start, 2, true);
+    int32_t start = regs[rs1] + imm;
+    regs[rd] = memory->readMemory(start, 2, true);
   }else if(!name.compare("lw")){
-    int32_t start = regs[getRs1()] + getImm();
-    regs[getRd()] = memory->readMemory(start, 4);
+    int32_t start = regs[rs1] + imm;
+    regs[rd] = memory->readMemory(start, 4);
   }else if(!name.compare("lbu")){
-    int32_t start = regs[getRs1()] + getImm();
-    regs[getRd()] = memory->readMemory(start, 1);
+    int32_t start = regs[rs1] + imm;
+    regs[rd] = memory->readMemory(start, 1);
   }else if(!name.compare("lhu")){
-    int32_t start = regs[getRs1()] + getImm();
-    regs[getRd()] = memory->readMemory(start, 2);
+    int32_t start = regs[rs1] + imm;
+    regs[rd] = memory->readMemory(start, 2);
   }else if(!name.compare("addi")){
-    regs[getRd()] = regs[getRs1()] + getImm();
+    regs[rd] = regs[rs1] + imm;
   }else if(!name.compare("slti")){
-    regs[getRd()] = regs[getRs1()] < getImm();  
+    regs[rd] = regs[rs1] < imm;  
   }else if(!name.compare("sltiu")){
-    regs[getRd()] = (uint32_t) regs[getRs1()] < (uint32_t) getImm();  
+    regs[rd] = (uint32_t) regs[rs1] < (uint32_t) imm;  
   }else if(!name.compare("xori")){
-    regs[getRd()] = regs[getRs1()] ^ getImm();
+    regs[rd] = regs[rs1] ^ imm;
   }else if(!name.compare("ori")){
-    regs[getRd()] = regs[getRs1()] | getImm();
+    regs[rd] = regs[rs1] | imm;
   }else if(!name.compare("andi")){
-    regs[getRd()] = regs[getRs1()] & getImm();
+    regs[rd] = regs[rs1] & imm;
   }else if(!name.compare("slli")){
-    regs[getRd()] = (uint32_t) regs[getRs1()] << getImm();
+    regs[rd] = (uint32_t) regs[rs1] << imm;
   }else if(!name.compare("srli")){
-    regs[getRd()] = (uint32_t) regs[getRs1()] >> getImm();
+    regs[rd] = (uint32_t) regs[rs1] >> imm;
   }else if(!name.compare("srai")){
-    regs[getRd()] = regs[getRs1()] >> getImm();
+    regs[rd] = regs[rs1] >> imm;
   }else if(!name.compare("jalr")){
-    regs[getRd()] = *pc + 4;
-    *pc = (regs[getRs1()] + getImm()) & 0xFFFFFFFE;
+    regs[rd] = *pc + 4;
+    *pc = (regs[rs1] + imm) & 0xFFFFFFFE;
     *pc -= 4;
   }else if(!name.compare("ebreak")){
     throw EbreakException("Passage au mode StepByStep");
