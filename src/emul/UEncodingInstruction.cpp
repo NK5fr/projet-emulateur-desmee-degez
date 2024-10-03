@@ -53,10 +53,13 @@ void UEncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){
   string name = getName();
 
   if(!name.compare("jal")){
-      cout << "jal" << endl;
+    regs[getRd()] = *pc + 4;
+    *pc += getImm() - 4;
   }else if(!name.compare("auipc")){
       cout << "auipc" << endl;
   }else{
       cout << "lui" << endl;
   }
+
+  regs[0] = 0;
 }

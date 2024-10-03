@@ -83,4 +83,6 @@ void REncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){
   }else{
     regs[getRd()] = regs[getRs1()] & regs[getRs2()];
   }
+
+  regs[0] = 0;
 }

@@ -116,8 +116,12 @@ void IEncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){
   }else if(!name.compare("srai")){
     regs[getRd()] = regs[getRs1()] >> getImm();
   }else if(!name.compare("jalr")){
-      cout << "jalr" << endl;
+    regs[getRd()] = *pc + 4;
+    *pc = (regs[getRs1()] + getImm()) & 0xFFFFFFFE;
+    *pc -= 4;
   }else if(!name.compare("ebreak")){
       cout << "ebreak" << endl;
   }
+
+  regs[0] = 0;
 }

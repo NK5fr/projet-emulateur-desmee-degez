@@ -82,17 +82,29 @@ void SEncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){
   string name = getName();
 
   if(!name.compare("beq")){
-      cout << "beq" << endl;
+    if(regs[getRs1()] == regs[getRs2()]){
+      *pc += getImm() - 4;
+    }
   }else if(!name.compare("bne")){
-      cout << "bne" << endl;
+    if(regs[getRs1()] != regs[getRs2()]){
+      *pc += getImm() - 4;
+    }
   }else if(!name.compare("blt")){
-      cout << "blt" << endl;
+    if(regs[getRs1()] < regs[getRs2()]){
+      *pc += getImm() - 4;
+    }
   }else if(!name.compare("bge")){
-      cout << "bge" << endl;
+    if(regs[getRs1()] > regs[getRs2()]){
+      *pc += getImm() - 4;
+    }
   }else if(!name.compare("bltu")){
-      cout << "bltu" << endl;
+    if( (uint32_t) regs[getRs1()] < (uint32_t) regs[getRs2()]){
+      *pc += getImm() - 4;
+    }
   }else if(!name.compare("bgeu")){
-      cout << "bgeu" << endl;
+    if( (uint32_t) regs[getRs1()] >= (uint32_t) regs[getRs2()]){
+      *pc += getImm() - 4;
+    }
   }else if(!name.compare("sb")){
       cout << "sb" << endl;
   }else if(!name.compare("sh")){
@@ -100,4 +112,6 @@ void SEncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){
   }else{
       cout << "sw" << endl;
   }
+
+  regs[0] = 0;
 }

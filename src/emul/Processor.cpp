@@ -101,6 +101,7 @@ void Processor::runStepByStep(){
                 if (instruction) {
                     instruction->execute(this->regs);
                 }
+                this->pc += 4;
                 command = "exit";
                 continuous = true;
             }
