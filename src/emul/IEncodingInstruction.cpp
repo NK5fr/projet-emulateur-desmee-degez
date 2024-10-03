@@ -120,7 +120,7 @@ void IEncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){
     *pc = (regs[getRs1()] + getImm()) & 0xFFFFFFFE;
     *pc -= 4;
   }else if(!name.compare("ebreak")){
-      cout << "ebreak" << endl;
+    throw EbreakException("Passage au mode StepByStep");
   }
 
   regs[0] = 0;

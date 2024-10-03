@@ -86,7 +86,7 @@ void Processor::runStepByStep(){
 
             if (!command.compare("step")) {
                 if (instruction) {
-                    instruction->execute(this->regs);
+                    instruction->execute(this->regs, &(this->pc), this->memory);
                 }
                 this->pc += 4;
             } else if (!command.rfind("x/", 0)) { 
@@ -99,7 +99,7 @@ void Processor::runStepByStep(){
                 this->pc = this->reset;
             } else if (!command.compare("continue")) {
                 if (instruction) {
-                    instruction->execute(this->regs);
+                    instruction->execute(this->regs, &(this->pc), this->memory);
                 }
                 this->pc += 4;
                 command = "exit";
@@ -107,6 +107,8 @@ void Processor::runStepByStep(){
             }
         } catch (const length_error& le) {
             cout << le.what() << endl;
+        } catch (const EbreakException& eb){
+            this->pc += 4;
         }
     }
 
@@ -127,16 +129,16 @@ void Processor::runContinuous(){
 
             if(!values[1].compare("I")){
                 IEncodingInstruction instruction(word, values[0]);
-                instruction.execute(this->regs);
+                instruction.execute(this->regs, &(this->pc), this->memory);
             }else if(!values[1].compare("U") || !values[1].compare("U_J")){
                 UEncodingInstruction instruction(word, values[0]);
-                instruction.execute(this->regs);
+                instruction.execute(this->regs, &(this->pc), this->memory);
             }else if(!values[1].compare("R")){
                 REncodingInstruction instruction(word, values[0]);
-                instruction.execute(this->regs);
+                instruction.execute(this->regs, &(this->pc), this->memory);
             }else if(!values[1].compare("S") || !values[1].compare("S_B")){
                 SEncodingInstruction instruction(word, values[0]);
-                instruction.execute(this->regs);
+                instruction.execute(this->regs, &(this->pc), this->memory);
             }
 
             this->pc += 4;
@@ -152,6 +154,9 @@ void Processor::runContinuous(){
             cout << le.what() << endl;
         } catch (const invalid_argument& ia) {
             cout << ia.what() << endl;
+        } catch (const EbreakException& eb){
+            this->pc += 4;
+            run = false;
         }
     }
 

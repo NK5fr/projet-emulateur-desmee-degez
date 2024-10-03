@@ -2,6 +2,7 @@
 #define Instruction_H
 
 #include <string>
+#include "Memory.h"
 
 class Instruction {
 public:
