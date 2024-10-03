@@ -43,6 +43,7 @@ uint32_t Processor::getOpcode(uint32_t word){
 void Processor::runStepByStep(){
     string command;
     bool continuous = false;
+    string defaultCommand = "step"; 
 
     while(command.compare("exit")){
         printRegisters();
@@ -81,9 +82,13 @@ void Processor::runStepByStep(){
         }
 
         try {
-            cout << "rivemul : ";
+            cout << "rivemul (default=" << defaultCommand << "): ";
             getline(cin, command);
-
+            if(!command.compare("")){
+                command = defaultCommand;
+            }else{
+                defaultCommand = command;
+            }
             if (!command.compare("step")) {
                 if (instruction) {
                     instruction->execute(this->regs, &(this->pc), this->memory);
