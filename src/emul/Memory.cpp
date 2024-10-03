@@ -36,6 +36,12 @@ void Memory::loadFile(string filename){
 }
 
 uint32_t Memory::readMemory(int start, int size){
+
+    if(start + size > this->size * 1024){
+        stringstream message << "instruction set error: invalid intruction: imposible to read address : " << start + size << " for memory size : " << this->size * 1024 << " Bytes";
+        throw length_error(message.str());
+    }
+
     uint32_t res = 0;
     for(int i = 0; i < size; ++i){
         uint32_t n = (uint32_t) this->memory[start + i];
@@ -43,4 +49,17 @@ uint32_t Memory::readMemory(int start, int size){
         res = res | (n << 8 * i);
     }
     return res;
+}
+
+void Memory::writeMemory(int start, int size, int32_t word){
+
+    if(start + size > this->size * 1024){
+        stringstream message << "instruction set error: invalid intruction: imposible to write on address : " << start + size << " for memory size : " << this->size * 1024 << " Bytes";
+        throw length_error(message.str());
+    }
+    
+    for(int i = 0; i < size; ++i){
+        char c = (word >> 8 * i) & 0xff;
+        this->memory[start + i] = c;
+    }
 }

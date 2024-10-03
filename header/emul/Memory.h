@@ -16,6 +16,7 @@ class Memory {
         Memory(uint32_t size);
         void loadFile(string filename);
         uint32_t readMemory(int start, int size);
+        void writeMemory(int start, int size, int32_t word);
 };
 
 #endif
