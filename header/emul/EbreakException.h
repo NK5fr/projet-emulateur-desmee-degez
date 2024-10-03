@@ -1,3 +1,6 @@
+#ifndef EbreakException_H
+#define EbreakException_H
+
 #include <exception>
 
 using namespace std;
@@ -11,3 +14,5 @@ public:
     EbreakException(const char* msg);
     const char* what() const throw();
 };
+
+#endif
