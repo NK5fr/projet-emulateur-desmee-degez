@@ -50,14 +50,16 @@ void UEncodingInstruction::printInstruction(){
 
 void UEncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){
   string name = getName();
+  uint32_t rd = getRd();
+  int32_t imm = getImm();
 
   if(!name.compare("jal")){
-    regs[getRd()] = *pc + 4;
-    *pc += getImm() - 4;
+    regs[rd] = *pc + 4;
+    *pc += imm - 4;
   }else if(!name.compare("auipc")){
-    regs[getRd()] = *pc + getImm();
+    regs[rd] = *pc + imm;
   }else{
-    regs[getRd()] = getImm();
+    regs[rd] = imm;
   }
 
   regs[0] = 0;
