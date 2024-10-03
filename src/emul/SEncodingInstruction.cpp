@@ -106,11 +106,14 @@ void SEncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){
       *pc += getImm() - 4;
     }
   }else if(!name.compare("sb")){
-      cout << "sb" << endl;
+    int32_t start = regs[getRs1()] + getImm();
+    memory->writeMemory(start, 1, regs[getRs2()]);
   }else if(!name.compare("sh")){
-      cout << "sh" << endl;
+    int32_t start = regs[getRs1()] + getImm();
+    memory->writeMemory(start, 2, regs[getRs2()]);
   }else{
-      cout << "sw" << endl;
+    int32_t start = regs[getRs1()] + getImm();
+    memory->writeMemory(start, 4, regs[getRs2()]);
   }
 
   regs[0] = 0;
