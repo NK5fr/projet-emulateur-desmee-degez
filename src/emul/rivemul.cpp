@@ -55,11 +55,7 @@ int main(int argc, char *argv[]) {
     */
 
     Processor processor(resetAddr, memSize, argv[optind]);
-    if(interactiveMode){
-        processor.runStepByStep();
-    }else{
-        processor.runContinuous();
-    }
+    processor.run(!interactiveMode);
 
     return 0; 
 }

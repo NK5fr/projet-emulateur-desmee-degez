@@ -40,134 +40,123 @@ uint32_t Processor::getOpcode(uint32_t word){
     return opcode;
 }
 
-void Processor::runStepByStep(){
-    string command;
-    bool continuous = false;
-    string defaultCommand = "step"; 
+Instruction* Processor::getInstruction(uint32_t word, uint32_t opc){
+    Instruction* instruction = nullptr;
 
-    while(command.compare("exit")){
-        printRegisters();
-        cout << "pc : " << this->pc << " : ";
+    array<string, 2>& values = opcode.at(opc);
 
-        uint32_t word = this->memory->readMemory(this->pc, 4);
-        uint32_t opc = getOpcode(word);
-
-        Instruction* instruction = nullptr;
-
-        try {
-            array<string, 2>& values = opcode.at(opc);
-
-            if(!values[1].compare("I")){
-                instruction = new IEncodingInstruction(word, values[0]);
-            }else if(!values[1].compare("U") || !values[1].compare("U_J")){
-                instruction = new UEncodingInstruction(word, values[0]);
-            }else if(!values[1].compare("R")){
-                instruction = new REncodingInstruction(word, values[0]);
-            }else if(!values[1].compare("S") || !values[1].compare("S_B")){
-                instruction = new SEncodingInstruction(word, values[0]);
-            }
-
-            if (instruction) {
-                instruction->printInstruction();
-            }
-        } catch (const out_of_range& oor) {
-            stringstream ssword;
-            ssword << hex << word;
-            cout << "instruction set error: invalid opcode: error value: 0x" << hex << opc
-                << " for word " << setfill('0') << setw(8) << ssword.str()
-                << endl;
-        }catch (const invalid_argument& ia) {
-            cout << ia.what() << endl;
-            instruction = nullptr;
-        }
-
-        try {
-            cout << "rivemul (default=" << defaultCommand << "): ";
-            getline(cin, command);
-            if(!command.compare("")){
-                command = defaultCommand;
-            }else{
-                defaultCommand = command;
-            }
-            if (!command.compare("step")) {
-                if (instruction) {
-                    instruction->execute(this->regs, &(this->pc), this->memory);
-                }
-                this->pc += 4;
-            } else if (!command.rfind("x/", 0)) { 
-                vector<string> splitedString = split(command, ' ');
-                int count = stoi(split(splitedString.at(0), '/').at(1));
-                int adress = stoi(splitedString.at(1));
-                uint32_t res = this->memory->readMemory(adress, count);
-                cout << res << endl;
-            } else if (!command.compare("reset")) {
-                this->pc = this->reset;
-            } else if (!command.compare("continue")) {
-                if (instruction) {
-                    instruction->execute(this->regs, &(this->pc), this->memory);
-                }
-                this->pc += 4;
-                command = "exit";
-                continuous = true;
-            }
-        } catch (const length_error& le) {
-            cout << le.what() << endl;
-        } catch (const EbreakException& eb){
-            this->pc += 4;
-        }
+    if(!values[1].compare("I")){
+        instruction = new IEncodingInstruction(word, values[0]);
+    }else if(!values[1].compare("U") || !values[1].compare("U_J")){
+        instruction = new UEncodingInstruction(word, values[0]);
+    }else if(!values[1].compare("R")){
+        instruction = new REncodingInstruction(word, values[0]);
+    }else if(!values[1].compare("S") || !values[1].compare("S_B")){
+        instruction = new SEncodingInstruction(word, values[0]);
     }
 
-    if(continuous){
-        runContinuous();
+    return instruction;
+}
+
+string Processor::getOpcodeError(uint32_t word, uint32_t opc){
+    stringstream message;
+    stringstream ssword;
+    ssword << hex << word;
+    message << "instruction set error: invalid opcode: error value: 0x" << hex << opc
+            << " for word " << setfill('0') << setw(8) << ssword.str();
+    return message.str();
+}
+
+uint32_t Processor::getMemoryValue(string command){
+    vector<string> splitedString = split(command, ' ');
+    int count = stoi(split(splitedString.at(0), '/').at(1));
+    int adress = stoi(splitedString.at(1));
+    return this->memory->readMemory(adress, count);
+}
+
+void Processor::getCommand(string* defaultCommand, string* command){
+    cout << "rivemul (default=" << *defaultCommand << "): ";
+    getline(cin, *command);
+
+    if(!command->compare("")) *command = *defaultCommand;
+    else *defaultCommand = *command;
+}
+
+Instruction* Processor::createInstruction(uint32_t word, uint32_t opc, bool* continuous){
+    if (!*continuous){
+        printRegisters();
+        cout << "pc : " << this->pc << " : ";
+    }
+
+    Instruction* instruction = nullptr;
+
+    try {
+        instruction = getInstruction(word, opc);
+        if (!*continuous && instruction) instruction->printInstruction();
+    } catch (const out_of_range& oor) {
+        cout << getOpcodeError(word, opc) << endl;
+    } catch (const invalid_argument& ia) {
+        cout << ia.what() << endl;
+        instruction = nullptr;
+    }
+
+    return instruction;
+}
+
+void Processor::executeInstruction(Instruction* instruction, string* defaultCommand, string* command, bool* continuous, bool* run){
+    try {
+        if(*continuous){
+            if(instruction){
+                instruction->execute(this->regs, &(this->pc), this->memory);
+                this->pc += 4;
+            }else{
+                *continuous = false;
+            }
+        }else{
+            getCommand(defaultCommand, command);
+            if (!command->compare("step")) {
+                if (instruction) {
+                    instruction->execute(this->regs, &(this->pc), this->memory);
+                    this->pc += 4;
+                }
+            } else if (!command->rfind("x/", 0)) { 
+                cout << getMemoryValue(*command) << endl;
+            } else if (!command->compare("reset")) {
+                this->pc = this->reset;
+            } else if (!command->compare("continue")) {
+                *continuous = true;
+                if (instruction) {
+                    instruction->execute(this->regs, &(this->pc), this->memory);
+                    this->pc += 4;
+                }
+            } else if (!command->compare("exit")) {
+                *run = false;
+            }
+        }
+    } catch (const length_error& le) {
+        cout << le.what() << endl;
+        *continuous = false;
+    } catch (const EbreakException& eb){
+        this->pc += 4;
+        *continuous = false;
     }
 }
 
-void Processor::runContinuous(){
+void Processor::run(bool b){
     bool run = true;
+    bool continuous = b;
+    string defaultCommand = "step"; 
+    string command;
 
     while(run){
         uint32_t word = this->memory->readMemory(this->pc, 4);
         uint32_t opc = getOpcode(word);
 
-        try {
-            array<string, 2>& values = opcode.at(opc);
+        Instruction* instruction = createInstruction(word, opc, &continuous);
 
-            Instruction* instruction = nullptr;
-
-            if(!values[1].compare("I")){
-                instruction = new IEncodingInstruction(word, values[0]);
-            }else if(!values[1].compare("U") || !values[1].compare("U_J")){
-                instruction = new UEncodingInstruction(word, values[0]);
-            }else if(!values[1].compare("R")){
-                instruction = new REncodingInstruction(word, values[0]);
-            }else if(!values[1].compare("S") || !values[1].compare("S_B")){
-                instruction = new SEncodingInstruction(word, values[0]);
-            }
-
-            if (instruction) {
-                instruction->execute(this->regs, &(this->pc), this->memory);
-            }
-
-            this->pc += 4;
-        
-        } catch (const out_of_range& oor) {
-            run = false;
-            stringstream ssword;
-            ssword << hex << word;
-            cout << "instruction set error: invalid opcode: error value: 0x" << hex << opc
-                << " for word " << setfill('0') << setw(8) << ssword.str()
-                << endl;
-        } catch (const length_error& le) {
-            cout << le.what() << endl;
-        } catch (const invalid_argument& ia) {
-            cout << ia.what() << endl;
-        } catch (const EbreakException& eb){
-            this->pc += 4;
-            run = false;
-        }
+        executeInstruction(instruction, &defaultCommand, &command, &continuous, &run);
     }
 
-    runStepByStep();
 }
 
 vector<string> Processor::split(const string& str, char delimiter) {

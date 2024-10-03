@@ -32,8 +32,8 @@ int32_t UEncodingInstruction::getImmJ(){
   int imm_19_12 = (this->word >> 12) & 0xff;
   int imm_20 = (this->word >> 31) & 0x1;
   int32_t imm32 = imm_20 << 20 | imm_19_12 << 12 | imm_11 << 11 | imm_10_1 << 1;
-  if ((imm32 >> 19) & 1) {
-    return imm32 | 0xfff00000;
+  if ((imm32 >> 20) & 1) {
+    return imm32 | 0xffe00000;
   }
   return imm32;
 }

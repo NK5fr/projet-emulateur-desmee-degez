@@ -61,8 +61,8 @@ int32_t SEncodingInstruction::getImmB(){
   int imm_11 = (this->word >> 7) & 0x1;
   int imm_12 = (this->word >> 31) & 0x1;
   int32_t imm32 = imm_12 << 12 | imm_11 << 11 | imm_10_5 << 5 | imm_4_1 << 1;
-  if ((imm32 >> 11) & 1) {
-    return imm32 | 0xfffff000;
+  if ((imm32 >> 12) & 1) {
+    return imm32 | 0xffffe000;
   }
   return imm32;
 }
