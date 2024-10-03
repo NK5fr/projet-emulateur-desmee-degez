@@ -104,7 +104,7 @@ void IEncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){
   }else if(!name.compare("sltiu")){
     regs[getRd()] = (uint32_t) regs[getRs1()] < (uint32_t) getImm();  
   }else if(!name.compare("xori")){
-      regs[getRd()] = regs[getRs1()] ^ getImm();
+    regs[getRd()] = regs[getRs1()] ^ getImm();
   }else if(!name.compare("ori")){
     regs[getRd()] = regs[getRs1()] | getImm();
   }else if(!name.compare("andi")){
