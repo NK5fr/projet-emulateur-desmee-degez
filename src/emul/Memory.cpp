@@ -38,7 +38,8 @@ void Memory::loadFile(string filename){
 uint32_t Memory::readMemory(int start, int size){
 
     if(start + size > this->size * 1024){
-        stringstream message << "instruction set error: invalid intruction: imposible to read address : " << start + size << " for memory size : " << this->size * 1024 << " Bytes";
+        stringstream message;
+        message << "instruction set error: invalid intruction: imposible to read address : " << start + size << " for memory size : " << this->size * 1024 << " Bytes";
         throw length_error(message.str());
     }
 
@@ -54,7 +55,8 @@ uint32_t Memory::readMemory(int start, int size){
 void Memory::writeMemory(int start, int size, int32_t word){
 
     if(start + size > this->size * 1024){
-        stringstream message << "instruction set error: invalid intruction: imposible to write on address : " << start + size << " for memory size : " << this->size * 1024 << " Bytes";
+        stringstream message;
+        message << "instruction set error: invalid intruction: imposible to write on address : " << start + size << " for memory size : " << this->size * 1024 << " Bytes";
         throw length_error(message.str());
     }
     
