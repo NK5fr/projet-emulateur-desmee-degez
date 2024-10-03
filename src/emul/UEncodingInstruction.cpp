@@ -40,7 +40,6 @@ int32_t UEncodingInstruction::getImmJ(){
 
 void UEncodingInstruction::printInstruction(){
   int32_t imm = getImm();
-
   stringstream immHex;
   immHex << hex << imm;
 
@@ -56,9 +55,9 @@ void UEncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){
     regs[getRd()] = *pc + 4;
     *pc += getImm() - 4;
   }else if(!name.compare("auipc")){
-      cout << "auipc" << endl;
+    regs[getRd()] = *pc + getImm();
   }else{
-      cout << "lui" << endl;
+    regs[getRd()] = getImm();
   }
 
   regs[0] = 0;
