@@ -80,40 +80,43 @@ void SEncodingInstruction::printInstruction(){
 
 void SEncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){
   string name = getName();
+  uint32_t rs1 = getRs1();
+  uint32_t rs2 = getRs2();
+  int32_t imm = getImm();
 
   if(!name.compare("beq")){
-    if(regs[getRs1()] == regs[getRs2()]){
-      *pc += getImm() - 4;
+    if(regs[rs1] == regs[rs2]){
+      *pc += imm - 4;
     }
   }else if(!name.compare("bne")){
-    if(regs[getRs1()] != regs[getRs2()]){
-      *pc += getImm() - 4;
+    if(regs[rs1] != regs[rs2]){
+      *pc += imm - 4;
     }
   }else if(!name.compare("blt")){
-    if(regs[getRs1()] < regs[getRs2()]){
-      *pc += getImm() - 4;
+    if(regs[rs1] < regs[rs2]){
+      *pc += imm - 4;
     }
   }else if(!name.compare("bge")){
-    if(regs[getRs1()] > regs[getRs2()]){
-      *pc += getImm() - 4;
+    if(regs[rs1] > regs[rs2]){
+      *pc += imm - 4;
     }
   }else if(!name.compare("bltu")){
-    if( (uint32_t) regs[getRs1()] < (uint32_t) regs[getRs2()]){
-      *pc += getImm() - 4;
+    if( (uint32_t) regs[rs1] < (uint32_t) regs[rs2]){
+      *pc += imm - 4;
     }
   }else if(!name.compare("bgeu")){
-    if( (uint32_t) regs[getRs1()] >= (uint32_t) regs[getRs2()]){
-      *pc += getImm() - 4;
+    if( (uint32_t) regs[rs1] >= (uint32_t) regs[rs2]){
+      *pc += imm - 4;
     }
   }else if(!name.compare("sb")){
-    int32_t start = regs[getRs1()] + getImm();
-    memory->writeMemory(start, 1, regs[getRs2()]);
+    int32_t start = regs[rs1] + imm;
+    memory->writeMemory(start, 1, regs[rs2]);
   }else if(!name.compare("sh")){
-    int32_t start = regs[getRs1()] + getImm();
-    memory->writeMemory(start, 2, regs[getRs2()]);
+    int32_t start = regs[rs1] + imm;
+    memory->writeMemory(start, 2, regs[rs2]);
   }else{
-    int32_t start = regs[getRs1()] + getImm();
-    memory->writeMemory(start, 4, regs[getRs2()]);
+    int32_t start = regs[rs1] + imm;
+    memory->writeMemory(start, 4, regs[rs2]);
   }
 
   regs[0] = 0;

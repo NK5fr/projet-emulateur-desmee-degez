@@ -61,27 +61,30 @@ void REncodingInstruction::printInstruction(){
 
 void REncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){
   string name = getName();
+  uint32_t rd = getRd();
+  uint32_t rs1 = getRs1();
+  uint32_t rs2 = getRs2();
 
   if(!name.compare("add")){
-    regs[getRd()] = regs[getRs1()] + regs[getRs2()];
+    regs[rd] = regs[rs1] + regs[rs2];
   }else if(!name.compare("sub")){
-    regs[getRd()] = regs[getRs1()] - regs[getRs2()];
+    regs[rd] = regs[rs1] - regs[rs2];
   }else if(!name.compare("sll")){
-    regs[getRd()] = (uint32_t) regs[getRs1()] << regs[getRs2()];
+    regs[rd] = (uint32_t) regs[rs1] << regs[rs2];
   }else if(!name.compare("slt")){
-    regs[getRd()] = regs[getRs1()] < regs[getRs2()];
+    regs[rd] = regs[rs1] < regs[rs2];
   }else if(!name.compare("sltu")){
-    regs[getRd()] = (uint32_t) regs[getRs1()] < (uint32_t) regs[getRs2()];
+    regs[rd] = (uint32_t) regs[rs1] < (uint32_t) regs[rs2];
   }else if(!name.compare("xor")){
-    regs[getRd()] = regs[getRs1()] ^ regs[getRs2()];
+    regs[rd] = regs[rs1] ^ regs[rs2];
   }else if(!name.compare("srl")){
-    regs[getRd()] = (uint32_t) regs[getRs1()] >> regs[getRs2()];
+    regs[rd] = (uint32_t) regs[rs1] >> regs[rs2];
   }else if(!name.compare("sra")){
-    regs[getRd()] = regs[getRs1()] >> regs[getRs2()];
+    regs[rd] = regs[rs1] >> regs[rs2];
   }else if(!name.compare("or")){
-    regs[getRd()] = regs[getRs1()] | regs[getRs2()];
+    regs[rd] = regs[rs1] | regs[rs2];
   }else{
-    regs[getRd()] = regs[getRs1()] & regs[getRs2()];
+    regs[rd] = regs[rs1] & regs[rs2];
   }
 
   regs[0] = 0;
