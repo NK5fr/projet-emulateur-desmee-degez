@@ -7,6 +7,7 @@
 #include <string>
 #include <sstream> 
 #include "Instruction.h"
+#include "EbreakException.h"
 
 using namespace std;
 

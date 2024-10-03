@@ -107,7 +107,9 @@ void Processor::runStepByStep(){
             }
         } catch (const length_error& le) {
             cout << le.what() << endl;
-        } 
+        } catch (const EbreakException& eb){
+            this->pc += 4;
+        }
     }
 
     if(continuous){
@@ -152,6 +154,9 @@ void Processor::runContinuous(){
             cout << le.what() << endl;
         } catch (const invalid_argument& ia) {
             cout << ia.what() << endl;
+        } catch (const EbreakException& eb){
+            this->pc += 4;
+            run = false;
         }
     }
 
