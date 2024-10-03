@@ -132,18 +132,20 @@ void Processor::runContinuous(){
         try {
             array<string, 2>& values = opcode.at(opc);
 
+            Instruction* instruction = nullptr;
+
             if(!values[1].compare("I")){
-                IEncodingInstruction instruction(word, values[0]);
-                instruction.execute(this->regs, &(this->pc), this->memory);
+                instruction = new IEncodingInstruction(word, values[0]);
             }else if(!values[1].compare("U") || !values[1].compare("U_J")){
-                UEncodingInstruction instruction(word, values[0]);
-                instruction.execute(this->regs, &(this->pc), this->memory);
+                instruction = new UEncodingInstruction(word, values[0]);
             }else if(!values[1].compare("R")){
-                REncodingInstruction instruction(word, values[0]);
-                instruction.execute(this->regs, &(this->pc), this->memory);
+                instruction = new REncodingInstruction(word, values[0]);
             }else if(!values[1].compare("S") || !values[1].compare("S_B")){
-                SEncodingInstruction instruction(word, values[0]);
-                instruction.execute(this->regs, &(this->pc), this->memory);
+                instruction = new SEncodingInstruction(word, values[0]);
+            }
+
+            if (instruction) {
+                instruction->execute(this->regs, &(this->pc), this->memory);
             }
 
             this->pc += 4;
