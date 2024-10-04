@@ -40,7 +40,7 @@ uint32_t Processor::getOpcode(uint32_t word){
     return opcode;
 }
 
-Instruction* Processor::getInstruction(uint32_t word, uint32_t opc){
+Instruction* Processor::createInstruction(uint32_t word, uint32_t opc){
     Instruction* instruction = nullptr;
 
     array<string, 2>& values = opcode.at(opc);
@@ -67,11 +67,16 @@ string Processor::getOpcodeError(uint32_t word, uint32_t opc){
     return message.str();
 }
 
-uint32_t Processor::getMemoryValue(string command){
+void Processor::printMemoryValue(string command){
     vector<string> splitedString = split(command, ' ');
     int count = stoi(split(splitedString.at(0), '/').at(1));
-    int adress = stoi(splitedString.at(1));
-    return this->memory->readMemory(adress, count);
+    int address = stoi(splitedString.at(1));
+    uint32_t n = this->memory->readMemory(address, count);
+    cout << hex << address << " : ";
+    for(int i = 0; i < count; ++i){
+        cout << hex << ((n >> 8*i) & 0xff) << " ";
+    }
+    cout << endl;
 }
 
 void Processor::getCommand(string* defaultCommand, string* command){
@@ -82,7 +87,7 @@ void Processor::getCommand(string* defaultCommand, string* command){
     else *defaultCommand = *command;
 }
 
-Instruction* Processor::createInstruction(uint32_t word, uint32_t opc, bool* continuous){
+Instruction* Processor::getInstruction(uint32_t word, uint32_t opc, bool* continuous){
     if (!*continuous){
         printRegisters();
         cout << "pc : " << this->pc << " : ";
@@ -91,7 +96,7 @@ Instruction* Processor::createInstruction(uint32_t word, uint32_t opc, bool* con
     Instruction* instruction = nullptr;
 
     try {
-        instruction = getInstruction(word, opc);
+        instruction = createInstruction(word, opc);
         if (!*continuous && instruction) instruction->printInstruction();
     } catch (const out_of_range& oor) {
         cout << getOpcodeError(word, opc) << endl;
@@ -120,7 +125,7 @@ void Processor::executeInstruction(Instruction* instruction, string* defaultComm
                     this->pc += 4;
                 }
             } else if (!command->rfind("x/", 0)) { 
-                cout << getMemoryValue(*command) << endl;
+                printMemoryValue(*command);
             } else if (!command->compare("reset")) {
                 this->pc = this->reset;
             } else if (!command->compare("continue")) {
@@ -152,7 +157,7 @@ void Processor::run(bool b){
         uint32_t word = this->memory->readMemory(this->pc, 4);
         uint32_t opc = getOpcode(word);
 
-        Instruction* instruction = createInstruction(word, opc, &continuous);
+        Instruction* instruction = getInstruction(word, opc, &continuous);
 
         executeInstruction(instruction, &defaultCommand, &command, &continuous, &run);
     }

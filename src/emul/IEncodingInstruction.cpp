@@ -80,7 +80,7 @@ void IEncodingInstruction::printInstruction(){
   }else{
     ostringstream oss;
     oss << "x" << getRd() << ", x" << getRs1() << ", " << getImm();
-    cout << left << setw(13) << setfill(' ') << getName() << left << setw(17) << setfill(' ') << oss.str() << "// 0x" << immHex.str() << endl;
+    cout << left << getName() << " " << oss.str() << " // 0x" << immHex.str() << endl;
   }
 }
 

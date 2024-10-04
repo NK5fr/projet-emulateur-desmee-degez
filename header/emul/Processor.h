@@ -26,11 +26,11 @@ class Processor {
         void printRegisters();
         uint32_t getOpcode(uint32_t word);
         vector<string> split(const string& str, char delimiter);
-        Instruction* getInstruction(uint32_t word, uint32_t opc);
+        Instruction* createInstruction(uint32_t word, uint32_t opc);
         string getOpcodeError(uint32_t word, uint32_t opc);
         void getCommand(string* defaultCommand, string* command);
-        uint32_t getMemoryValue(string command);
-        Instruction* createInstruction(uint32_t word, uint32_t opc, bool* continuous);
+        void printMemoryValue(string command);
+        Instruction* getInstruction(uint32_t word, uint32_t opc, bool* continuous);
         void executeInstruction(Instruction* instruction, string* defaultCommand, string* command, bool* continuous, bool* run);
     
     public :

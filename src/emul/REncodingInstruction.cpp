@@ -56,7 +56,7 @@ uint32_t REncodingInstruction::getRs2(){
 void REncodingInstruction::printInstruction(){
   ostringstream oss;
   oss << "x" << getRd() << ", x" << getRs1() << ", x" << getRs2();
-  cout << left << setw(13) << setfill(' ') << getName() << oss.str() << endl;
+  cout << getName() << " " << oss.str() << endl;
 }
 
 void REncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){

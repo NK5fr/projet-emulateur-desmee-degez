@@ -75,7 +75,7 @@ void SEncodingInstruction::printInstruction(){
 
   ostringstream oss;
   oss << "x" << getRs1() << ", x" << getRs2() << ", " << imm;
-  cout << left << setw(13) << setfill(' ') << getName() << left << setw(17) << setfill(' ') << oss.str() << "// 0x" << immHex.str() << endl;
+  cout << getName() << " " << oss.str() << " // 0x" << immHex.str() << endl;
 }
 
 void SEncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){
