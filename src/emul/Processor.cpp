@@ -26,7 +26,10 @@ Processor::Processor(uint32_t pc, uint32_t memorySize, string filename) {
 void Processor::printRegisters(){
 
     for(int i = 0; i < 32; ++i){
-        cout << "x" << dec << i << " : " << hex << regs[i];
+        stringstream reg, value;
+        reg << "x" << left << setfill(' ') << setw(2) << dec << i << " : ";
+        value << setfill('0') << setw(8) << hex << regs[i];
+        cout << reg.str() << value.str();
         if((i+1) % 4 == 0){
             cout << endl;
         }else{
