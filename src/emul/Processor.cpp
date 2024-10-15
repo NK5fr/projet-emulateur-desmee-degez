@@ -92,16 +92,16 @@ void Processor::printMemoryValue(string command){
     cout << endl;
 }
 
-void Processor::getCommand(string* defaultCommand, string* command){
-    cout << "rivemul (default=" << *defaultCommand << "): ";
-    getline(cin, *command);
+void Processor::getCommand(){
+    cout << "rivemul (default=" << this->defaultCommand << "): ";
+    getline(cin, this->command);
 
-    if(!command->compare("")) *command = *defaultCommand;
-    else *defaultCommand = *command;
+    if(!command.compare("")) this->command = this->defaultCommand;
+    else this->defaultCommand = this->command;
 }
 
-Instruction* Processor::getInstruction(uint32_t word, uint32_t opc, bool* continuous){
-    if (!*continuous){
+Instruction* Processor::getInstruction(uint32_t word, uint32_t opc){
+    if (!this->continuous){
         printRegisters();
         stringstream pcValue;
         pcValue << setfill('0') << setw(8) << hex << this->pc;
@@ -112,7 +112,7 @@ Instruction* Processor::getInstruction(uint32_t word, uint32_t opc, bool* contin
 
     try {
         instruction = createInstruction(word, opc);
-        if (!*continuous && instruction) instruction->printInstruction();
+        if (!this->continuous && instruction) instruction->printInstruction();
     } catch (const out_of_range& oor) {
         cout << getOpcodeError(word, opc) << endl;
     } catch (const invalid_argument& ia) {
@@ -123,62 +123,61 @@ Instruction* Processor::getInstruction(uint32_t word, uint32_t opc, bool* contin
     return instruction;
 }
 
-void Processor::executeInstruction(Instruction* instruction, string* defaultCommand, string* command, bool* continuous, bool* run){
+void Processor::executeInstruction(Instruction* instruction){
     try {
-        if(*continuous){
+        if(this->continuous){
             if(instruction){
                 instruction->execute(this->regs, &(this->pc), this->memory);
                 this->pc += 4;
             }else{
-                *continuous = false;
+                this->continuous = false;
             }
         }else{
-            getCommand(defaultCommand, command);
-            if (!command->compare("step")) {
+            getCommand();
+            if (!command.compare("step")) {
                 if (instruction) {
                     instruction->execute(this->regs, &(this->pc), this->memory);
                     this->pc += 4;
                 }
-            } else if (!command->rfind("x/", 0)) { 
-                printMemoryValue(*command);
-            } else if (!command->compare("reset")) {
+            } else if (regex_match(this->command, regex("x/[0-9]* [0-9]*"))) { 
+                printMemoryValue(this->command);
+            } else if (!command.compare("reset")) {
                 this->pc = this->reset;
-            } else if (!command->compare("continue")) {
-                *continuous = true;
+            } else if (!command.compare("continue")) {
+                this->continuous = true;
                 if (instruction) {
                     instruction->execute(this->regs, &(this->pc), this->memory);
                     this->pc += 4;
                 }
-            } else if (!command->compare("exit")) {
-                *run = false;
+            } else if (!command.compare("exit")) {
+                this->run = false;
             }
         }
     } catch (const length_error& le) {
         cout << le.what() << endl;
-        *continuous = false;
+        this->continuous = false;
     } catch (const EbreakException& eb){
         if(isSemiHosting()){
             executeSemiHosting();
         }else{
-            *continuous = false;
+            this->continuous = false;
         }
         this->pc += 4;
     }
 }
 
-void Processor::run(bool b){
-    bool run = true;
-    bool continuous = b;
-    string defaultCommand = "step"; 
-    string command;
+void Processor::runEmulator(bool b){
+    this->continuous = b;
 
-    while(run){
+    while(this->run){
         uint32_t word = this->memory->readMemory(this->pc, 4);
         uint32_t opc = getOpcode(word);
 
-        Instruction* instruction = getInstruction(word, opc, &continuous);
+        Instruction* instruction = getInstruction(word, opc);
 
-        executeInstruction(instruction, &defaultCommand, &command, &continuous, &run);
+        executeInstruction(instruction);
+
+        delete instruction;
     }
 
 }

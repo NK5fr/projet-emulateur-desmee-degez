@@ -12,6 +12,7 @@
 #include "UEncodingInstruction.h"
 #include "Memory.h"
 #include <vector>
+#include <regex>
 
 using namespace std; 
 
@@ -22,22 +23,26 @@ class Processor {
         uint32_t pc;
         uint32_t reset;
         Memory* memory;
+        bool run = true;
+        bool continuous;
+        string defaultCommand = "step"; 
+        string command;
 
         void printRegisters();
         uint32_t getOpcode(uint32_t word);
         vector<string> split(const string& str, char delimiter);
         Instruction* createInstruction(uint32_t word, uint32_t opc);
         string getOpcodeError(uint32_t word, uint32_t opc);
-        void getCommand(string* defaultCommand, string* command);
+        void getCommand();
         void printMemoryValue(string command);
-        Instruction* getInstruction(uint32_t word, uint32_t opc, bool* continuous);
-        void executeInstruction(Instruction* instruction, string* defaultCommand, string* command, bool* continuous, bool* run);
+        Instruction* getInstruction(uint32_t word, uint32_t opc);
+        void executeInstruction(Instruction* instruction);
         bool isSemiHosting();
         void executeSemiHosting();
 
     public :
         Processor(uint32_t pc, uint32_t memorySize, string filename);
-        void run(bool b);
+        void runEmulator(bool b);
 };
 
 #endif
