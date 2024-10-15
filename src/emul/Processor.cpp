@@ -145,8 +145,12 @@ void Processor::executeInstruction(Instruction* instruction, string* defaultComm
         cout << le.what() << endl;
         *continuous = false;
     } catch (const EbreakException& eb){
+        if(isSemiHosting()){
+            executeSemiHosting();
+        }else{
+            *continuous = false;
+        }
         this->pc += 4;
-        *continuous = false;
     }
 }
 
@@ -176,5 +180,27 @@ vector<string> Processor::split(const string& str, char delimiter) {
     }
 
     return splitedString;
+}
+
+bool Processor::isSemiHosting(){
+    uint32_t wordBefore = this->memory->readMemory(this->pc-4, 4);
+    uint32_t wordAfter = this->memory->readMemory(this->pc+4, 4);
+    return (wordBefore == 0x01f01013) && (wordAfter == 0x40705013);
+}
+
+void Processor::executeSemiHosting(){
+    uint32_t instruction = (uint32_t) this->regs[10];
+    int emplacement = this->regs[11];
+    char chara = (char) this->memory->readMemory(emplacement, 1);
+    if(instruction == 0x03){
+        cout << chara ;
+    }
+    else if(instruction == 0x04){
+        while(chara != '\0'){
+            cout << chara ;
+            emplacement++;
+            chara = (char) this->memory->readMemory(emplacement, 1);
+        }
+    }
 }
 

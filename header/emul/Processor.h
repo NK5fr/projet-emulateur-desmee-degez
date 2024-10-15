@@ -32,7 +32,9 @@ class Processor {
         void printMemoryValue(string command);
         Instruction* getInstruction(uint32_t word, uint32_t opc, bool* continuous);
         void executeInstruction(Instruction* instruction, string* defaultCommand, string* command, bool* continuous, bool* run);
-    
+        bool isSemiHosting();
+        void executeSemiHosting();
+
     public :
         Processor(uint32_t pc, uint32_t memorySize, string filename);
         void run(bool b);
