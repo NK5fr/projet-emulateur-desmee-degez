@@ -41,7 +41,9 @@ uint32_t Memory::readMemory(int start, int size, bool isSigned){
     }
 
     if(start == 0x40000000){
-        return getchar() & 0xff;
+        int c = getchar();
+        uint32_t n = (uint32_t) c & 0xff;
+        return n;
     }
 
     if(start + size > this->size * 1024){
