@@ -35,7 +35,14 @@ void Memory::loadFile(string filename){
     }
 }
 
-uint32_t Memory::readMemory(int start, int size, bool isSigned){
+uint32_t Memory::readMemory(int start, int size, bool isSigned){    
+    if(start == 0x40000004 or start == 0x40000008){
+        return 0;
+    }
+
+    if(start == 0x40000000){
+        return getchar() & 0xff;
+    }
 
     if(start + size > this->size * 1024){
         stringstream message;
@@ -59,7 +66,15 @@ uint32_t Memory::readMemory(int start, int size, bool isSigned){
 }
 
 void Memory::writeMemory(int start, int size, int32_t word){
-
+    if(start == 0x40000004){
+        cout << (char) word ;
+        return ;
+    }
+    if(start == 0x40000008){
+        cerr << (char) word ;
+        return ;
+    }
+    
     if(start + size > this->size * 1024){
         stringstream message;
         message << "instruction set error: invalid intruction: imposible to write on address : " << start + size << " for memory size : " << this->size * 1024 << " Bytes";
