@@ -74,10 +74,20 @@ void Processor::printMemoryValue(string command){
     vector<string> splitedString = split(command, ' ');
     int count = stoi(split(splitedString.at(0), '/').at(1));
     int address = stoi(splitedString.at(1));
-    uint32_t n = this->memory->readMemory(address, count);
+    int q = count / 4;
+    int r = count % 4;
     cout << hex << address << " : ";
-    for(int i = 0; i < count; ++i){
-        cout << hex << ((n >> 8*i) & 0xff) << " ";
+    for(int i = 0; i < q; ++i){
+        uint32_t n = this->memory->readMemory(address + 4*i, 4);
+        for(int j = 0; j < 4; ++j){
+            cout << hex << ((n >> 8*j) & 0xff) << " ";
+        }
+    }
+    if(r != 0){
+        uint32_t n = this->memory->readMemory(address + 4*q, r);
+        for(int j = 0; j < r; ++j){
+            cout << hex << ((n >> 8*j) & 0xff) << " ";
+        }
     }
     cout << endl;
 }
@@ -93,7 +103,9 @@ void Processor::getCommand(string* defaultCommand, string* command){
 Instruction* Processor::getInstruction(uint32_t word, uint32_t opc, bool* continuous){
     if (!*continuous){
         printRegisters();
-        cout << "pc : " << this->pc << " : ";
+        stringstream pcValue;
+        pcValue << setfill('0') << setw(8) << hex << this->pc;
+        cout << "pc : " << pcValue.str() << " : ";
     }
 
     Instruction* instruction = nullptr;
