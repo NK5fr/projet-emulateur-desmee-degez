@@ -45,15 +45,6 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    /*
-    try{
-        IEncodingInstruction instruction(0xf6405093, "OP-IMM");
-        cout << instruction.getName() << endl;
-    } catch (const invalid_argument& ia) {
-        cout << ia.what() << endl;
-    }
-    */
-
     Processor processor(resetAddr, memSize, argv[optind]);
     processor.run(!interactiveMode);
 

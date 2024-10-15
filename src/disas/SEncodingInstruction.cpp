@@ -45,8 +45,8 @@ int32_t SEncodingInstruction::getImm(){
 }
 
 int32_t SEncodingInstruction::getImmB(){
-  int imm_10_5 = (this->word >> 25) & 0x7f;
-  int imm_4_1 = (this->word >> 8) & 0x1f;
+  int imm_10_5 = (this->word >> 25) & 0x3f;
+  int imm_4_1 = (this->word >> 8) & 0xf;
   int imm_11 = (this->word >> 7) & 0x1;
   int imm_12 = (this->word >> 31) & 0x1;
   int32_t imm32 = imm_12 << 12 | imm_11 << 11 | imm_10_5 << 5 | imm_4_1 << 1;
