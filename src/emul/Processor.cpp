@@ -151,6 +151,8 @@ void Processor::executeInstruction(Instruction* instruction){
                 }
             } else if (!command.compare("exit")) {
                 this->run = false;
+            } else {
+                cout << "unknown command : " << this->command << endl;
             }
         }
     } catch (const length_error& le) {
