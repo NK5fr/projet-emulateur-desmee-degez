@@ -159,12 +159,12 @@ void Processor::executeInstruction(Instruction* instruction){
         cout << le.what() << endl;
         this->continuous = false;
     } catch (const EbreakException& eb){
-        if(isSemiHosting()){
+        if(isSemiHosting()) {
             executeSemiHosting();
-        }else{
+        } else {
             this->continuous = false;
+            this->pc += 4;
         }
-        this->pc += 4;
     }
 }
 
@@ -202,18 +202,24 @@ bool Processor::isSemiHosting(){
 }
 
 void Processor::executeSemiHosting(){
-    uint32_t instruction = (uint32_t) this->regs[10];
-    int emplacement = this->regs[11];
-    char chara = (char) this->memory->readMemory(emplacement, 1);
-    if(instruction == 0x03){
-        cout << chara ;
-    }
-    else if(instruction == 0x04){
-        while(chara != '\0'){
+    try {
+        uint32_t instruction = (uint32_t) this->regs[10];
+        int emplacement = this->regs[11];
+        char chara = (char) this->memory->readMemory(emplacement, 1);
+        if(instruction == 0x03){
             cout << chara ;
-            emplacement++;
-            chara = (char) this->memory->readMemory(emplacement, 1);
         }
+        else if(instruction == 0x04){
+            while(chara != '\0'){
+                cout << chara ;
+                emplacement++;
+                chara = (char) this->memory->readMemory(emplacement, 1);
+            }
+        }
+        this->pc += 4;
+    } catch (const length_error& le) {
+        cout << le.what() << endl;
+        this->continuous = false;
     }
 }
 
