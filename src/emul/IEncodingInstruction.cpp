@@ -124,8 +124,9 @@ void IEncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){
   }else if(!name.compare("srai")){
     regs[rd] = regs[rs1] >> imm;
   }else if(!name.compare("jalr")){
+    int tmp = (regs[rs1] + imm) & 0xFFFFFFFE;
     regs[rd] = *pc + 4;
-    *pc = (regs[rs1] + imm) & 0xFFFFFFFE;
+    *pc = tmp;
     *pc -= 4;
   }else if(!name.compare("ebreak")){
     throw EbreakException("Passage au mode StepByStep");
