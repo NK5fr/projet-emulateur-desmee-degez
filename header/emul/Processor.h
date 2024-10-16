@@ -42,7 +42,7 @@ class Processor {
 
     public :
         Processor(uint32_t pc, uint32_t memorySize, string filename);
-        void runEmulator(bool b);
+        int runEmulator(bool b);
 };
 
 #endif

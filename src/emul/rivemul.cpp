@@ -46,9 +46,7 @@ int main(int argc, char *argv[]) {
     }
 
     Processor processor(resetAddr, memSize, argv[optind]);
-    processor.runEmulator(!interactiveMode);
-
-    return 0; 
+    return processor.runEmulator(!interactiveMode);
 }
 
 void printHelp(){

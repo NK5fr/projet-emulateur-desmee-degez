@@ -168,7 +168,7 @@ void Processor::executeInstruction(Instruction* instruction){
     }
 }
 
-void Processor::runEmulator(bool b){
+int Processor::runEmulator(bool b){
     this->continuous = b;
 
     while(this->run){
@@ -181,6 +181,8 @@ void Processor::runEmulator(bool b){
 
         delete instruction;
     }
+
+    return !this->command.compare("exit") ? 0 : 1;
 
 }
 
@@ -205,16 +207,31 @@ void Processor::executeSemiHosting(){
     try {
         uint32_t instruction = (uint32_t) this->regs[10];
         int emplacement = this->regs[11];
-        char chara = (char) this->memory->readMemory(emplacement, 1);
-        if(instruction == 0x03){
-            cout << chara ;
-        }
-        else if(instruction == 0x04){
-            while(chara != '\0'){
-                cout << chara ;
-                emplacement++;
-                chara = (char) this->memory->readMemory(emplacement, 1);
-            }
+        char c;
+        int n;
+        switch (instruction) {
+            case 0x03:
+                c = (char) this->memory->readMemory(emplacement, 1);
+                cout << c ;
+                break;
+            case 0x04:
+                c = (char) this->memory->readMemory(emplacement, 1);
+                while(c != '\0'){
+                    cout << c ;
+                    emplacement++;
+                    c = (char) this->memory->readMemory(emplacement, 1);
+                }
+                break;
+            case 0x102:
+                n = this->memory->readMemory(emplacement, 4);
+                cerr << "test unsuccessful : " <<  n << endl;
+                this->run = false;
+                break;
+            case 0x101:
+                cout << "test successful" << endl;
+                this->run = false;
+                this->command = "exit";
+                break;
         }
         this->pc += 4;
     } catch (const length_error& le) {
