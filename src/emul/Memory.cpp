@@ -41,8 +41,10 @@ uint32_t Memory::readMemory(int start, int size, bool isSigned){
     }
 
     if(start == 0x40000000){
-        int c = getchar();
+        char c;
+        cin >> c;
         uint32_t n = (uint32_t) c & 0xff;
+        cin.ignore(INT_MAX, '\n');
         return n;
     }
 
