@@ -71,11 +71,11 @@ uint32_t Memory::readMemory(int start, int size, bool isSigned){
 
 void Memory::writeMemory(int start, int size, int32_t word){
     if(start == 0x40000004){
-        cout << (char) word ;
+        cout << (char) word << flush;
         return ;
     }
     if(start == 0x40000008){
-        cerr << (char) word ;
+        cerr << (char) word << flush;
         return ;
     }
     
