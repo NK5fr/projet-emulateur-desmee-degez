@@ -223,8 +223,7 @@ void Processor::executeSemiHosting(){
                 }
                 break;
             case 0x102:
-                n = this->memory->readMemory(emplacement, 4);
-                cerr << "test unsuccessful : " << dec << n << endl;
+                cerr << "test unsuccessful : " << dec << emplacement << endl;
                 this->run = false;
                 break;
             case 0x101:
