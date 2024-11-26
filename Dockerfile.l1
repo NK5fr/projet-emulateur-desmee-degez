@@ -1,0 +1,4 @@
+FROM gcc:latest
+COPY ./livrable/decode /decode
+RUN g++ -o /decode/bin/riscv-decode /decode/header/* /decode/src/*
+ENTRYPOINT ["/decode/bin/riscv-decode"]

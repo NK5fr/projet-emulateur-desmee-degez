@@ -1,0 +1,4 @@
+FROM gcc:latest
+COPY ./livrable/emul /emul
+RUN g++ -o /emul/bin/rivemul /emul/header/* /emul/src/*
+ENTRYPOINT ["/emul/bin/rivemul"]
