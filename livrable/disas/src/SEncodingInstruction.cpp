@@ -1,4 +1,4 @@
-#include "../../header/disas/SEncodingInstruction.h"
+#include "../header/SEncodingInstruction.h"
 
 map<string, map<uint32_t, string>> SEncodingInstruction::instructions = {
     {"BRANCH", {

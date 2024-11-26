@@ -1,4 +1,4 @@
-#include "../../header/disas/riscv-disas.h"
+#include "../header/riscv-decode.h"
 
 map<uint32_t, array<string, 2>> opcode = {
     {99, {"BRANCH", "S_B"}},
@@ -67,6 +67,8 @@ uint32_t getOpcode(uint32_t word){
 void printResult(vector<uint32_t> words)
 {
 
+    cout << "offset,valeur,opcode,encoding" << endl;
+
     for (int i = 0; i < words.size(); ++i) {
 
         stringstream offset;
@@ -74,28 +76,18 @@ void printResult(vector<uint32_t> words)
 
         uint32_t opc = getOpcode(words.at(i));
 
+        stringstream word;
+        word << hex << words.at(i);
+
         try {
             array<string, 2>& values = opcode.at(opc);
 
-            if(!values[1].compare("I")){
-                IEncodingInstruction instruction(words.at(i), values[0]);
-                instruction.printInstruction(offset.str());
-            }else if(!values[1].compare("U") || !values[1].compare("U_J")){
-                UEncodingInstruction instruction(words.at(i), values[0]);
-                instruction.printInstruction(offset.str());
-            }else if(!values[1].compare("R")){
-                REncodingInstruction instruction(words.at(i), values[0]);
-                instruction.printInstruction(offset.str());
-            }else if(!values[1].compare("S") || !values[1].compare("S_B")){
-                SEncodingInstruction instruction(words.at(i), values[0]);
-                instruction.printInstruction(offset.str());
-            }else{
-                cout << endl;
-            }
-            
+            cout << setfill('0') << setw(8) << offset.str() << ","
+                 << setfill('0') << setw(8) << word.str() << ","
+                 << values[0] << ","
+                 << values[1]
+                 << endl;
         } catch (const out_of_range& oor) {
-            stringstream word;
-            word << hex << words.at(i);
             cout << "instruction set error: invalid opcode: error value: 0x" << hex << opc
                  << " at offset " << setfill('0') << setw(8) << offset.str()
                  << " for word " << setfill('0') << setw(8) << word.str()
@@ -105,10 +97,10 @@ void printResult(vector<uint32_t> words)
 }
 
 void printHelp(){
-    cout << "Un désassembleur RISC-V pour le jeu d'instruction RV32I" << endl;
-    cout << "\nUtilisation: riscv-disas [OPTIONS] FICHIER_BIN" << endl;
+    cout << "Un décodeur d'instruction RISC-V RV32I" << endl;
+    cout << "\nUtilisation: riscv-decode [OPTIONS] FICHIER_BIN" << endl;
     cout << "\nArguments:" << endl;
-    cout << "   FICHIER_BIN         Un fichier contenant les instructions à désassembler" << endl;
+    cout << "   FICHIER_BIN         Un fichier au format binaire contenant les instructions à décoder" << endl;
     cout << "\nOptions:" << endl;
     cout << "   -h                  Affiche ce message d'aide" << endl;
 }
@@ -117,4 +109,5 @@ void printError(){
     cout << "Utilisation: riscv-decode [OPTIONS] FICHIER_BIN" << endl;
     cout << "Essaie 'riscv-decode -h' pour plus d'information." << endl;
 }
+
 

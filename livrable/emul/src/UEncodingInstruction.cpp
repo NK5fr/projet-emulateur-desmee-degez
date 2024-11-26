@@ -1,4 +1,4 @@
-#include "../../header/disas/UEncodingInstruction.h"
+#include "../header/UEncodingInstruction.h"
 
 UEncodingInstruction::UEncodingInstruction(uint32_t word, string name) {
   this->word = word;
@@ -13,12 +13,15 @@ string UEncodingInstruction::getName(){
   return res;
 }
 
-string UEncodingInstruction::getRd(){
-  uint32_t rd = (this->word >> 7) & 0x1f;
-  return "x" + to_string(rd);
+uint32_t UEncodingInstruction::getRd(){
+  return (this->word >> 7) & 0x1f;
 }
 
 int32_t UEncodingInstruction::getImm(){
+  if(!this->name.compare("JAL")){
+    return getImmJ();
+  }
+
   int32_t imm = (this->word) & 0xfffff000;
   return imm;
 }
@@ -35,20 +38,29 @@ int32_t UEncodingInstruction::getImmJ(){
   return imm32;
 }
 
-void UEncodingInstruction::printInstruction(string offset){
-  int32_t imm;
-
-  if(!this->name.compare("JAL")){
-    imm = getImmJ();
-  }else{
-    imm = getImm();
-  }
-
+void UEncodingInstruction::printInstruction(){
+  int32_t imm = getImm();
   stringstream immHex;
   immHex << hex << imm;
 
-  cout << right << setw(8) << setfill('0') << offset << ": ";
   ostringstream oss;
-  oss << getRd() << ", " << imm;
-  cout << left << setw(13) << setfill(' ') << getName() << left << setw(17) << setfill(' ') << oss.str() << "// 0x" << immHex.str() << endl;
+  oss << "x" << getRd() << ", " << imm;
+  cout << getName() << " " << oss.str() << " // 0x" << immHex.str() << endl;
+}
+
+void UEncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){
+  string name = getName();
+  uint32_t rd = getRd();
+  int32_t imm = getImm();
+
+  if(!name.compare("jal")){
+    regs[rd] = *pc + 4;
+    *pc += imm - 4;
+  }else if(!name.compare("auipc")){
+    regs[rd] = *pc + imm;
+  }else{
+    regs[rd] = imm;
+  }
+
+  regs[0] = 0;
 }

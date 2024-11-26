@@ -1,4 +1,4 @@
-#include "../../header/disas/REncodingInstruction.h"
+#include "../header/REncodingInstruction.h"
 
 map<string, map<uint32_t, string>> REncodingInstruction::instructions = {
     {"OP", {

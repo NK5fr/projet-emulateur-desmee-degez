@@ -1,4 +1,4 @@
-#include "../../header/emul/rivemul.h"
+#include "../header/rivemul.h"
 
 #define DEFAULT_MEMORY_SIZE 512;
 #define DEFAULT_RESET_ADDR 0x0;

@@ -3,7 +3,7 @@
 Compiler le livrable 1 :
 
 ```bash
-g++ -o bin/riscv-decode header/decode/* src/decode/*
+g++ -o bin/riscv-decode livrable/decode/header/* livrable/decode/src/*
 ```
 
 Executer le livrable 1 :
@@ -17,7 +17,7 @@ bin/riscv-decode
 Compiler le livrable 2 :
 
 ```bash
-g++ -o bin/riscv-disas header/disas/* src/disas/*
+g++ -o bin/riscv-disas livrable/disas/header/* livrable/disas/src/*
 ```
 
 Executer le livrable 2 :
@@ -31,7 +31,7 @@ bin/riscv-disas
 Compiler le livrable 3 :
 
 ```bash
-g++ -o bin/rivemul header/emul/* src/emul/*
+g++ -o bin/rivemul livrable/emul/header/* livrable/emul/src/*
 ```
 
 Executer le livrable 3 :

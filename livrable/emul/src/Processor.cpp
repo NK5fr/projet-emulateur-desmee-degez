@@ -1,4 +1,4 @@
-#include "../../header/emul/Processor.h"
+#include "../header/Processor.h"
 
 map<uint32_t, array<string, 2>> Processor::opcode = {
     {99, {"BRANCH", "S_B"}},

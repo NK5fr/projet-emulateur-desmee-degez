@@ -1,4 +1,4 @@
-#include "../../header/emul/Memory.h"
+#include "../header/Memory.h"
 
 Memory::Memory(uint32_t size){
     this->memory = new char[size * 1024];

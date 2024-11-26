@@ -1,4 +1,4 @@
-#include "../../header/disas/IEncodingInstruction.h"
+#include "../header/IEncodingInstruction.h"
 
 map<string, map<uint32_t, string>> IEncodingInstruction::instructions = {
     {"LOAD", {
