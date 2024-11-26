@@ -1,4 +1,4 @@
-FROM gcc:latest
+FROM gcc:12.2.0
 COPY ./livrable/decode /decode
-RUN g++ -o /decode/bin/riscv-decode /decode/header/* /decode/src/*
-ENTRYPOINT ["/decode/bin/riscv-decode"]
+RUN g++ -o /decode/riscv-decode /decode/header/*.h /decode/src/*.cpp
+ENTRYPOINT ["/decode/riscv-decode"]

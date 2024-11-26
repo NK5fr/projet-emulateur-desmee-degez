@@ -26,16 +26,33 @@ Executer le livrable 2 :
 bin/riscv-disas
 ```
 
-# Livrable 3
+# Livrable 3-4
 
-Compiler le livrable 3 :
+Compiler le livrable 3-4 :
 
 ```bash
 g++ -o bin/rivemul livrable/emul/header/* livrable/emul/src/*
 ```
 
-Executer le livrable 3 :
+Executer le livrable 3-4 :
 
 ```bash
 bin/rivemul
+```
+
+
+# Docker 
+
+Le livrable 3 et le livrable 4 sont tous deux compris dans le dossier livrable/emul.
+
+Construire le container contenant l'exécutable du livrable :
+
+```bash
+docker build -t livrable1 -f Dockerfile.l1 .
+```
+
+Exécuter le container avec un fichier en paramètre :
+
+```bash
+docker run -it --rm -v /home/vagrant/workspace/res:/res livrable1 /res/binary_format.bin
 ```

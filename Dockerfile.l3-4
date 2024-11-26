@@ -1,4 +1,4 @@
-FROM gcc:latest
+FROM gcc:12.2.0
 COPY ./livrable/emul /emul
-RUN g++ -o /emul/bin/rivemul /emul/header/* /emul/src/*
-ENTRYPOINT ["/emul/bin/rivemul"]
+RUN g++ -o /emul/rivemul /emul/header/*.h /emul/src/*.cpp
+ENTRYPOINT ["/emul/rivemul"]

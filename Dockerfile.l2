@@ -1,4 +1,4 @@
-FROM gcc:latest
+FROM gcc:12.2.0
 COPY ./livrable/disas /disas
-RUN g++ -o /disas/bin/riscv-disas /disas/header/* /disas/src/*
-ENTRYPOINT ["/disas/bin/riscv-disas"]
+RUN g++ -o /disas/riscv-disas /disas/header/*.h /disas/src/*.cpp
+ENTRYPOINT ["/disas/riscv-disas"]
