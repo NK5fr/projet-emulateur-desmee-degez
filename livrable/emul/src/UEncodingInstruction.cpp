@@ -58,7 +58,7 @@ void UEncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){
     *pc += imm - 4;
   }else if(!name.compare("auipc")){
     regs[rd] = *pc + imm;
-  }else{
+  }else if(!name.compare("lui")){
     regs[rd] = imm;
   }
 

@@ -10,6 +10,18 @@ map<string, map<uint32_t, string>> REncodingInstruction::instructions = {
         {7, "and"}}}
 };
 
+map<string, map<uint32_t, string>> REncodingInstruction::mInstructions = {
+    {"OP", {
+        {0, "mul"},
+        {1, "mulh"},
+        {2, "mulhsu"},
+        {3, "mulhu"},
+        {4, "div"},
+        {5, "divu"},
+        {6, "rem"},
+        {7, "remu"}}}
+};
+
 REncodingInstruction::REncodingInstruction(uint32_t word, string name) {
   this->name = name;
   this->word = word;
@@ -18,6 +30,18 @@ REncodingInstruction::REncodingInstruction(uint32_t word, string name) {
 string REncodingInstruction::getName(){
   uint32_t funct3 = (this->word >> 12) & 0x7;
   uint32_t funct7 = (this->word >> 25) & 0x7f;
+
+  if(funct7 == 1){
+    try{
+      return mInstructions.at(this->name).at(funct3);
+    }catch (const out_of_range& oor){
+      stringstream ssword;
+      ssword << hex << word;
+      stringstream message;
+      message << "instruction set error: invalid intruction: error funct3 : " << funct3 << ", funct7 : " << funct7 << " for opcode " << this->name << " for word " << setfill('0') << setw(8) << ssword.str();
+      throw invalid_argument(message.str());
+    }
+  }
 
   if(funct3 == 5 && funct7 == 32){
     return "sra";
@@ -83,8 +107,22 @@ void REncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){
     regs[rd] = regs[rs1] >> regs[rs2];
   }else if(!name.compare("or")){
     regs[rd] = regs[rs1] | regs[rs2];
-  }else{
+  }else if(!name.compare("and")){
     regs[rd] = regs[rs1] & regs[rs2];
+  }else if(!name.compare("mul")){
+    
+  }else if(!name.compare("mulh")){
+
+  }else if(!name.compare("mulhsu")){
+
+  }else if(!name.compare("div")){
+
+  }else if(!name.compare("divu")){
+
+  }else if(!name.compare("rem")){
+
+  }else if(!name.compare("remu")){
+
   }
 
   regs[0] = 0;
