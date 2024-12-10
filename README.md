@@ -53,13 +53,13 @@ Le livrable 3 et le livrable 4 sont tous deux compris dans le dossier livrable/e
 Construire le container contenant l'exécutable du livrable :
 
 ```bash
-docker build -t livrable1 -f Dockerfile.l1 .
+docker build -t livrablex -f Dockerfile.lx .
 ```
 
 Exécuter le container avec un fichier en paramètre :
 
 ```bash
-docker run -it --rm -v /home/vagrant/workspace/res:/res livrable1 /res/binary_format.bin
+docker run -it --rm -v /home/vagrant/workspace/res:/res livrablex /res/md5.bin
 ```
 
 # Extensions
