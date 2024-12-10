@@ -14,6 +14,7 @@ class REncodingInstruction : public Instruction {
 
   private :    
     static map<string, map<uint32_t, string>> instructions;
+    static map<string, map<uint32_t, string>> mInstructions;
     string name;
     uint32_t word;
 

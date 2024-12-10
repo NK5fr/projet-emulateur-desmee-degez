@@ -114,7 +114,7 @@ void SEncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){
   }else if(!name.compare("sh")){
     int32_t start = regs[rs1] + imm;
     memory->writeMemory(start, 2, regs[rs2]);
-  }else{
+  }else if(!name.compare("sw")){
     int32_t start = regs[rs1] + imm;
     memory->writeMemory(start, 4, regs[rs2]);
   }
