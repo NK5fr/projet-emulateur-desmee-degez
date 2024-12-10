@@ -127,16 +127,18 @@ void REncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){
     regs[rd] = (int32_t) (res >> 32);
   }else if(!name.compare("div")){
     if(regs[rs2] == 0) regs[rd] = -1;
-    regs[rd] = regs[rs1] / regs[rs2];
+    else if (regs[rs1] == -2147483648 && regs[rs2] == -1) regs[rd] = -2147483648;
+    else regs[rd] = regs[rs1] / regs[rs2];
   }else if(!name.compare("divu")){
     if(regs[rs2] == 0) regs[rd] = 4294967295;
-    regs[rd] = (uint32_t) regs[rs1] / (uint32_t) regs[rs2];
+    else regs[rd] = (uint32_t) regs[rs1] / (uint32_t) regs[rs2];
   }else if(!name.compare("rem")){
     if(regs[rs2] == 0) regs[rd] = regs[rs1];
-    regs[rd] = regs[rs1] % regs[rs2];
+    else if (regs[rs1] == -2147483648 && regs[rs2] == -1) regs[rd] = 0;
+    else regs[rd] = regs[rs1] % regs[rs2];
   }else if(!name.compare("remu")){
     if(regs[rs2] == 0) regs[rd] = regs[rs1];
-    regs[rd] = (uint32_t) regs[rs1] % (uint32_t) regs[rs2];
+    else regs[rd] = (uint32_t) regs[rs1] % (uint32_t) regs[rs2];
   }
 
   regs[0] = 0;
