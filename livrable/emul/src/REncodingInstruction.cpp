@@ -113,11 +113,13 @@ void REncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){
     int64_t res = regs[rs1] * regs[rs2];
     regs[rd] = (int32_t) (res & 0xffffffff);
   }else if(!name.compare("mulh")){
-    int64_t res = regs[rs1] * regs[rs2];
+    int64_t x = regs[rs1];
+    int64_t y = regs[rs2];
+    int64_t res = x * y;
     regs[rd] = int32_t (res >> 32);
   }else if(!name.compare("mulhsu")){
-    int64_t x = regs[rs1]
-    uint64_t y = (uint32_t) regs[rs2]
+    int64_t x = regs[rs1];
+    uint64_t y = (uint32_t) regs[rs2];
     int64_t res = x * y;
     regs[rd] = (int32_t) (res >> 32);
   }else if(!name.compare("mulhu")){
