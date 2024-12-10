@@ -110,19 +110,33 @@ void REncodingInstruction::execute(int32_t* regs, uint32_t* pc, Memory* memory){
   }else if(!name.compare("and")){
     regs[rd] = regs[rs1] & regs[rs2];
   }else if(!name.compare("mul")){
-    
+    int64_t res = regs[rs1] * regs[rs2];
+    regs[rd] = (int32_t) (res & 0xffffffff);
   }else if(!name.compare("mulh")){
-
+    int64_t res = regs[rs1] * regs[rs2];
+    regs[rd] = int32_t (res >> 32);
   }else if(!name.compare("mulhsu")){
-
+    int64_t x = regs[rs1]
+    uint64_t y = (uint32_t) regs[rs2]
+    int64_t res = x * y;
+    regs[rd] = (int32_t) (res >> 32);
+  }else if(!name.compare("mulhu")){
+    uint64_t x = (uint32_t) regs[rs1];
+    uint64_t y = (uint32_t) regs[rs2];
+    int64_t res = x * y;
+    regs[rd] = (int32_t) (res >> 32);
   }else if(!name.compare("div")){
-
+    if(regs[rs2] == 0) regs[rd] = -1;
+    regs[rd] = regs[rs1] / regs[rs2];
   }else if(!name.compare("divu")){
-
+    if(regs[rs2] == 0) regs[rd] = 4294967295;
+    regs[rd] = (uint32_t) regs[rs1] / (uint32_t) regs[rs2];
   }else if(!name.compare("rem")){
-
+    if(regs[rs2] == 0) regs[rd] = regs[rs1];
+    regs[rd] = regs[rs1] % regs[rs2];
   }else if(!name.compare("remu")){
-
+    if(regs[rs2] == 0) regs[rd] = regs[rs1];
+    regs[rd] = (uint32_t) regs[rs1] % (uint32_t) regs[rs2];
   }
 
   regs[0] = 0;

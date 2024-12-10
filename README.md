@@ -1,3 +1,8 @@
+# Groupe
+
+>Romain DEGEZ
+>Nathan DESMEE
+
 # Livrable 1
 
 Compiler le livrable 1 :
@@ -56,3 +61,6 @@ Exécuter le container avec un fichier en paramètre :
 ```bash
 docker run -it --rm -v /home/vagrant/workspace/res:/res livrable1 /res/binary_format.bin
 ```
+
+# Extensions
+
