@@ -64,3 +64,12 @@ docker run -it --rm -v /home/vagrant/workspace/res:/res livrable1 /res/binary_fo
 
 # Extensions
 
+Extension M fonctionnelle avec les instructions : 
+- mul
+- mulh
+- mulhu
+- mulhsu
+- div
+- divu
+- rem
+- remu
