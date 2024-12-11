@@ -28,8 +28,8 @@ REncodingInstruction::REncodingInstruction(uint32_t word, string name) {
 }
 
 string REncodingInstruction::getName(){
-  uint32_t funct3 = (this->word >> 12) & 0x7;
-  uint32_t funct7 = (this->word >> 25) & 0x7f;
+  uint32_t funct3 = getFunct3();
+  uint32_t funct7 = getFunct7();
 
   if(funct7 == 1){
     try{
@@ -64,9 +64,16 @@ string REncodingInstruction::getName(){
   }
 }
 
+uint32_t REncodingInstruction::getFunct3(){
+  return (this->word >> 12) & 0x7;
+}
+
+uint32_t REncodingInstruction::getFunct7(){
+  return (this->word >> 25) & 0x7f;
+}
+
 uint32_t REncodingInstruction::getRd(){
-  return (this->word >> 7) & 0x1f;
-    
+  return (this->word >> 7) & 0x1f;   
 }
 
 uint32_t REncodingInstruction::getRs1(){

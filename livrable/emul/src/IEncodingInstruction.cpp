@@ -29,9 +29,9 @@ string IEncodingInstruction::getName(){
     return "jalr";
   }
 
-  uint32_t funct3 = (this->word >> 12) & 0x7;
+  uint32_t funct3 = getFunct3();
   int32_t imm = getImm();
-  uint32_t funct7 = (this->word >> 25) & 0x7f;
+  uint32_t funct7 = getFunct7();
 
   if(!this->name.compare("OP-IMM") && funct3 == 5 && funct7 == 32){
     return "srai";
@@ -52,6 +52,14 @@ string IEncodingInstruction::getName(){
     message << "instruction set error: invalid intruction: error funct3 : " << funct3 << ", funct7 : " << funct7 << ", imm : " << imm << " for opcode " << this->name << " for word " << setfill('0') << setw(8) << ssword.str();
     throw invalid_argument(message.str());
   }
+}
+
+uint32_t IEncodingInstruction::getFunct3(){
+  return (this->word >> 12) & 0x7;
+}
+
+uint32_t IEncodingInstruction::getFunct7(){
+  return (this->word >> 25) & 0x7f;
 }
 
 uint32_t IEncodingInstruction::getRd(){

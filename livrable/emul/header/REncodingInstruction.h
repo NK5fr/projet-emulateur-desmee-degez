@@ -21,6 +21,8 @@ class REncodingInstruction : public Instruction {
   public :
     REncodingInstruction(uint32_t word, string name);
     string getName();
+    uint32_t getFunct3();
+    uint32_t getFunct7();
     uint32_t getRd();
     uint32_t getRs1();
     uint32_t getRs2();
