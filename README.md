@@ -79,7 +79,7 @@ docker run -it --rm -v /home/vagrant/workspace/res:/res livrable3-4
 
 ## Bonus
 
-# Extension M
+### Extension M
 
  Extension M fonctionnelle avec les instructions :
 - mul
