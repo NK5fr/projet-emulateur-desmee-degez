@@ -1,70 +1,87 @@
-# Groupe
+# SAE Emulateur BUT3
 
->Romain DEGEZ
->Nathan DESMEE
+## Auteurs 
 
-# Livrable 1
+- Romain DEGEZ
+- Nathan DESMEE
 
-Compiler le livrable 1 :
+## Livrable 1
+
+### Compilation
 
 ```bash
 g++ -o bin/riscv-decode livrable/decode/header/* livrable/decode/src/*
 ```
 
-Executer le livrable 1 :
+### Execution
 
 ```bash
 bin/riscv-decode
 ```
 
-# Livrable 2
+### Docker
 
-Compiler le livrable 2 :
+```bash
+docker build -t livrable1 -f Dockerfile.l1 .
+```
+
+```bash
+docker run -it --rm -v /home/vagrant/workspace/res:/res livrable1
+```
+
+## Livrable 2
+
+### Compilation
 
 ```bash
 g++ -o bin/riscv-disas livrable/disas/header/* livrable/disas/src/*
 ```
 
-Executer le livrable 2 :
+### Execution
 
 ```bash
 bin/riscv-disas
 ```
 
-# Livrable 3-4
+### Docker
 
-Compiler le livrable 3-4 :
+```bash
+docker build -t livrable2 -f Dockerfile.l2 .
+```
+
+```bash
+docker run -it --rm -v /home/vagrant/workspace/res:/res livrable2
+```
+
+## Livrables 3 et 4
+
+### Compilation
 
 ```bash
 g++ -o bin/rivemul livrable/emul/header/* livrable/emul/src/*
 ```
 
-Executer le livrable 3-4 :
+### Execution
 
 ```bash
 bin/rivemul
 ```
 
-
-# Docker 
-
-Le livrable 3 et le livrable 4 sont tous deux compris dans le dossier livrable/emul.
-
-Construire le container contenant l'exécutable du livrable :
+### Docker
 
 ```bash
-docker build -t livrablex -f Dockerfile.lx .
+docker build -t livrable3-4 -f Dockerfile.l3-4 .
 ```
-
-Exécuter le container avec un fichier en paramètre :
 
 ```bash
-docker run -it --rm -v /home/vagrant/workspace/res:/res livrablex /res/md5.bin
+docker run -it --rm -v /home/vagrant/workspace/res:/res livrable3-4
 ```
 
-# Extensions
+## Bonus
 
-Extension M fonctionnelle avec les instructions : 
+# Extension M
+
+ Extension M fonctionnelle avec les instructions :
 - mul
 - mulh
 - mulhu
